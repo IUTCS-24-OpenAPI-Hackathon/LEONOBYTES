@@ -1,3 +1,5 @@
 fastapi
 uvicorn[standard]
 countrydetails
+dotenv_values
+google-generativeai

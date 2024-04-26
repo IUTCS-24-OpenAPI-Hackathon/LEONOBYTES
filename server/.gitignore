@@ -2,6 +2,6 @@
 .conda
 *.ipynb
 *.log
-data/pdf/*
 env
 */__pycache__
+test.py
