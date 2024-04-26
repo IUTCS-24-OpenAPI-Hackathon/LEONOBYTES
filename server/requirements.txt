@@ -4,3 +4,9 @@ countrydetails
 python-dotenv
 google-generativeai
 wikipedia
+langchain_core
+langchain-google-genai
+langchain
+langchain-community
+langchain-openai
+googlemaps

@@ -12,6 +12,13 @@ from utils.aqi_report import get_air_quality
 from models.aqi_models import CityAQIRequest, CityAQIResponse
 from utils.country_info import get_country_info, get_capital
 from models.country_info_models import CountryInfoRequest, CountryInfoResponse
+from utils.place_details import get_place_details
+from models.place_details_models import PlaceDetailsRequest, PlaceDetailsResponse
+from utils.show_photos import get_place_photos
+from models.place_photo_models import PlacePhotosRequest, PlacePhotosResponse
+from models.amenities_models import NearbyAmenitiesRequest, NearbyAmenitiesResponse
+from utils.show_amenties import find_nearby_places
+
 app = FastAPI()
 
 
@@ -128,6 +135,47 @@ async def get_country_info_endpoint(request: CountryInfoRequest):
             capitals.append(capital)
         
         return CountryInfoResponse(country_name=request.country_name, currencies=currencies, borders=borders, capitals=capitals)
+    except HTTPException as e:
+        raise e
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))    
+    
+    
+#get place details
+@app.post("/place_details/")
+async def get_place_details_endpoint(request: PlaceDetailsRequest):
+    try:
+       
+        place_details = get_place_details(request.place_name)
+        
+        rating = place_details.get('rating', 'No rating available')
+        reviews = place_details.get('reviews', [])
+        
+        return PlaceDetailsResponse(rating=rating, reviews=reviews)
+    except HTTPException as e:
+        raise e
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+#show photos
+@app.post("/place_photos/")
+async def get_place_photos_endpoint(request: PlacePhotosRequest):
+    try:
+
+        photo_urls = get_place_photos(request.place_name)[0:5]
+        
+        return PlacePhotosResponse(photo_urls=photo_urls)
+    except HTTPException as e:
+        raise e
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/nearby_amenities/")
+async def get_nearby_amenities_endpoint(request: NearbyAmenitiesRequest):
+    try:
+   
+        amenities = find_nearby_places(request.location_name, request.place_type)
+        return NearbyAmenitiesResponse(amenities=amenities)
     except HTTPException as e:
         raise e
     except Exception as e:
