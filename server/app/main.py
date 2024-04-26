@@ -6,6 +6,10 @@ from models.place_description_models import PlaceDescriptionRequest, PlaceDescri
 from models.attraction_models import AttractionRequest, AttractionResponse
 from utils.classify_attractions import get_tourist_attractions_names
 from models.country_models import CountryNameRequest
+from models.weather_condition_models import WeatherRequest, WeatherResponse
+from utils.weather_report import show_weather
+from utils.aqi_report import get_air_quality
+from models.aqi_models import CityAQIRequest, CityAQIResponse
 app = FastAPI()
 
 
@@ -68,5 +72,43 @@ async def get_place_description_endpoint(request: PlaceDescriptionRequest):
     except HTTPException as e:
         raise e
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))    
+        raise HTTPException(status_code=500, detail=str(e))  
+    
+    
+#get weather report
+@app.post("/weather/")
+async def get_weather(request: WeatherRequest):
+    try:
+        weather_data = show_weather(request.place_name)
+        return WeatherResponse(**weather_data)
+    except HTTPException as e:
+        raise e
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+      
+#get aqi report
+
+@app.post("/city_aqi/")
+async def get_city_aqi(request: CityAQIRequest):
+    try:
+        aqi_value = get_air_quality(request.city)
+        air_quality = ''
+        if aqi_value <= 50 : 
+            air_quality = 'Good'
+        elif aqi_value > 50 and aqi_value < 100:
+            air_quality = 'Moderate' 
+        elif aqi_value > 101 and aqi_value <= 150:
+            air_quality = 'Unhealthy for Sensitive Groups'
+        elif aqi_value > 150  and aqi_value <= 200:
+            air_quality = 'Unhealthy'
+        elif aqi_value > 200 and aqi_value <= 300:
+            air_quality = 'Very Unhealthy'    
+        else : 
+            air_quality = 'Hazardous'
+
+        return CityAQIResponse(city=request.city, aqi_value=aqi_value, air_quality=air_quality)
+    except HTTPException as e:
+        raise e
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
     
