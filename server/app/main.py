@@ -16,6 +16,8 @@ from utils.place_details import get_place_details
 from models.place_details_models import PlaceDetailsRequest, PlaceDetailsResponse
 from utils.show_photos import get_place_photos
 from models.place_photo_models import PlacePhotosRequest, PlacePhotosResponse
+from models.amenities_models import NearbyAmenitiesRequest, NearbyAmenitiesResponse
+from utils.show_amenties import find_nearby_places
 
 app = FastAPI()
 
@@ -167,4 +169,14 @@ async def get_place_photos_endpoint(request: PlacePhotosRequest):
         raise e
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
-    
+
+@app.post("/nearby_amenities/")
+async def get_nearby_amenities_endpoint(request: NearbyAmenitiesRequest):
+    try:
+   
+        amenities = find_nearby_places(request.location_name, request.place_type)
+        return NearbyAmenitiesResponse(amenities=amenities)
+    except HTTPException as e:
+        raise e
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))    
