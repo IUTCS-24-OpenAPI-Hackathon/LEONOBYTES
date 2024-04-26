@@ -13,7 +13,7 @@ from models.aqi_models import CityAQIRequest, CityAQIResponse
 from utils.country_info import get_country_info, get_capital
 from models.country_info_models import CountryInfoRequest, CountryInfoResponse
 from utils.place_details import get_place_details
-from models.place_details_models import PlaceDetailsRequest, PlaceDetailsResponse
+from models.place_description_models import PlaceDescriptionRequest, PlaceDescriptionResponse
 from utils.show_photos import get_place_photos
 from models.place_photo_models import PlacePhotosRequest, PlacePhotosResponse
 from models.amenities_models import NearbyAmenitiesRequest, NearbyAmenitiesResponse
@@ -143,22 +143,6 @@ async def get_country_info_endpoint(request: CountryInfoRequest):
         raise HTTPException(status_code=500, detail=str(e))    
     
     
-#get place details
-@app.post("/place_details/")
-async def get_place_details_endpoint(request: PlaceDetailsRequest):
-    try:
-       
-        place_details = get_place_details(request.place_name)
-        
-        rating = place_details.get('rating', 'No rating available')
-        reviews = place_details.get('reviews', [])
-        
-        return PlaceDetailsResponse(rating=rating, reviews=reviews)
-    except HTTPException as e:
-        raise e
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
-
 #show photos
 @app.post("/place_photos/")
 async def get_place_photos_endpoint(request: PlacePhotosRequest):

@@ -31,3 +31,9 @@ def get_place_description(place_name):
         raise HTTPException(status_code=500, detail=f"HTTP Error: {e}")
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"An error occurred: {e}")
+    
+    
+# if __name__ == "__main__":
+#     place_name = "Chittagong"
+#     description = get_place_description(place_name)
+#     print(description)    
