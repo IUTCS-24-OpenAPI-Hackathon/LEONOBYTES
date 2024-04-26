@@ -22,19 +22,22 @@ const TouristPlaceDescription = () => {
 
     const [weatherData, setWeatherData] = useState([]);
     const [aqiData, setAqiData] = useState([]);
+    const [placeData, setPlaceData] = useState([]);
     const [countryData, setCountryData] = useState([]);
+
 
     const leonobytesCountryName = localStorage.getItem('leonobytescountryname');
     const leonobytesStateName = localStorage.getItem('leonobytesstatename');
 
     const getWeatherData = async () => {
         try{
-            const Apipath = `${apiPath}/weather`;
+            const Apipath = `${apiPath}/weather/`;
             const response = await axios.post(Apipath,{
-                place_name: leonobytesStateName,
+                place_name: leonobytesCountryName,
             });
+            //console.log(response.data);
             setPageLoading(false);
-            if(response.data){
+            if(response.status == 200){
                 setWeatherData(response.data);
             }  
             else {
@@ -48,15 +51,38 @@ const TouristPlaceDescription = () => {
     }
 
     const getAqiData = async () => {
+        //console.log(leonobytesStateName)
         try{
-            const Apipath = `${apiPath}/city_aqi`;
+            const Apipath = `${apiPath}/city_aqi/`;
             const response = await axios.post(Apipath,{
-                city: leonobytesStateName,
+                city: leonobytesCountryName,
             });
-            
+            // console.log(response.data);
             setPageLoading(false);
-            if(response.data){
-                setWeatherData(response.data);
+            if(response.status == 200){
+                setAqiData(response.data);
+            }  
+            else {
+              //
+            }
+        }
+        catch(error){
+          setPageLoading(false);
+          console.log(error.message);
+        }
+    }
+
+    const getPlaceData = async () => {
+        try{
+            const Apipath = `${apiPath}/place_description`;
+            const response = await axios.post(Apipath,{
+                place_name: leonobytesStateName,
+            });
+            //console.log(response.data);
+            setPageLoading(false);
+            if(response.status == 200){
+                console.log(response.data)
+                setPlaceData(response.data.description);
             }  
             else {
               //
@@ -74,9 +100,10 @@ const TouristPlaceDescription = () => {
             const response = await axios.post(Apipath,{
                 country_name: leonobytesCountryName,
             });
-            
+            console.log(response.data);
             setPageLoading(false);
-            if(response.data){
+            if(response.status == 200){
+                console.log(response.data)
                 setCountryData(response.data);
             }  
             else {
@@ -92,6 +119,7 @@ const TouristPlaceDescription = () => {
     useEffect(() => {
         getWeatherData();
         getAqiData();
+        getPlaceData();
         getCountryData();
     }, []);
 
@@ -135,47 +163,26 @@ const TouristPlaceDescription = () => {
                         <p>{aqiData.air_quality}</p>
                     </div>
                 </div>
-            }
-
-            {/* <div className='touristplacedescription_middleBox'>
-                <div className='touristplacedescription_middleBox_items'>
-                    <h2>Weather</h2>
-                    <p>Sunny</p>
-                </div>
-                <div className='touristplacedescription_middleBox_items'>
-                    <h2>AQI Score</h2>
-                    <p>356</p>
-                </div>
-                <div className='touristplacedescription_middleBox_items'>
-                    <h2>Local Currency</h2>
-                    <p>Taka</p>
-                </div>
-                <div className='touristplacedescription_middleBox_items'>
-                    <h2>Capital City</h2>
-                    <p>Dhaka</p>
-                </div>
-            </div> */}
-
+            }                
+                
             <div className='touristplacedescription_description'>
-                <h2>Cox Bazar</h2>
-                <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ipsum eligendi nam dolorem iusto unde minus eveniet fugiat exercitationem odit, esse ex, magni velit assumenda earum recusandae numquam sequi quam! Ipsam! Lorem ipsum dolor sit amet consectetur, adipisicing elit. Velit quos veniam eveniet quibusdam aspernatur esse, eos temporibus quia quasi dolores, magnam officiis dignissimos adipisci excepturi aperiam alias ipsam doloremque illo!</p>
-                {countryData && 
-                    <>
-                        <h3>Currency: {countryData?.currencies}</h3>
-                        <h3>Borders:</h3>
-                            <ul>
-                                {countryData?.currencies.map((currency, index) => (
-                                    <li key={index}>
-                                    {currency.name} - {currency.symbol}
-                                    </li>
-                                ))}
-                            </ul>
-                    </>
+                <h2>{leonobytesStateName}</h2>
+                {placeData && 
+                    <p>{placeData}</p>
                 }
+                       
+                {countryData &&
+                <>
+                    <h3><b>Currency</b>: {countryData.currencies}</h3>
+                        {countryData.borders && countryData.borders.length > 0 && <h3><b>Borders:</b> {countryData.borders[0]}</h3>}
+                        {countryData.capitals && countryData.capitals.length > 0 && <h3><b>Capitals:</b> {countryData.capitals[0]}</h3>}
+                    </>
+                }       
             </div>
+            
 
             <div className='touristplacedescription_album'>
-                <h2>More Photos</h2>
+                <h2>More Photos: </h2>
                 <div className='touristplacedescription_album_photos'>
                     <img src="https://cdn.pixabay.com/photo/2018/03/20/14/00/sea-3243357_1280.jpg" />
                     <img src="https://cdn.pixabay.com/photo/2018/03/20/14/00/sea-3243357_1280.jpg" />
