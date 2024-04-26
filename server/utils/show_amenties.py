@@ -18,22 +18,57 @@ def find_nearby_locations(lat, lon, radius, amenty):
     # Execute the query
     result = api.query(query)
     
-    # Extract and print information from the result
-    hospitals = []
+    # Extract and return information from the result
+    locations = []
     for node in result.nodes:
-        hospitals.append({
+        locations.append({
             'name': node.tags.get("name", "Unknown"),
             'latitude': node.lat,
             'longitude': node.lon,
         })
     for way in result.ways:
-        hospitals.append({
+        locations.append({
             'name': way.tags.get("name", "Unknown"),
             'latitude': way.center_lat,
             'longitude': way.center_lon,
         })
 
-    return hospitals[:5]
+    return locations[:5]
+
+
+# def find_nearby_locations(lat, lon, radius, amenty):
+#     api = overpy.Overpass()
+
+#     # Define the Overpass query
+#     query = f"""
+#     [out:json];
+#     (
+#       node["amenity"={amenty}](around:{radius},{lat},{lon});
+#       way["amenity"={amenty}](around:{radius},{lat},{lon});
+#       rel["amenity"={amenty}](around:{radius},{lat},{lon});
+#     );
+#     out center;
+#     """
+    
+#     # Execute the query
+#     result = api.query(query)
+    
+#     # Extract and print information from the result
+#     hospitals = []
+#     for node in result.nodes:
+#         hospitals.append({
+#             'name': node.tags.get("name", "Unknown"),
+#             'latitude': node.lat,
+#             'longitude': node.lon,
+#         })
+#     for way in result.ways:
+#         hospitals.append({
+#             'name': way.tags.get("name", "Unknown"),
+#             'latitude': way.center_lat,
+#             'longitude': way.center_lon,
+#         })
+
+#     return hospitals[:5]
 
 
 # def find_nearby_locations(lat, lon, radius, amenties):

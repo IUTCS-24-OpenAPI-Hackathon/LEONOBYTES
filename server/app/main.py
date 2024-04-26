@@ -16,7 +16,7 @@ from utils.place_details import get_place_details
 from models.place_description_models import PlaceDescriptionRequest, PlaceDescriptionResponse
 from utils.show_photos import get_place_photos
 from models.place_photo_models import PlacePhotosRequest, PlacePhotosResponse
-from models.amenities_models import LocationResponse,Location
+from models.amenities_models import LocationInput
 from utils.show_amenties import find_nearby_locations 
 from typing import List
 from models.socio_factor_models import SocioRequest,SocioResponse
@@ -196,43 +196,59 @@ async def get_place_photos_endpoint(request: PlacePhotosRequest):
 #         # Return an empty list if there's an error
 #          return e
 
-@app.post("/amenities/", response_model=LocationResponse)
-async def get_nearby_locations(location: Location):
+# @app.post("/amenities/", response_model=LocationResponse)
+# async def get_nearby_locations(location: Location):
     
-    print(location)
+#     print(location)
+#     geolocator = Nominatim(user_agent="get_lat_long")
+#     user_location = geolocator.geocode(location.name)
+#     if not user_location:
+#         raise HTTPException(status_code=404, detail="Location not found")
+    
+#     radius = location.radius
+#     latitude = user_location.latitude
+#     longitude = user_location.longitude
+#     amenties = location.amenties
+    
+    
+#     print(amenties)
+    
+#     Context = {
+#         'user_location_name' : location.name,
+#         'user_location_lat' : latitude,
+#         'user_location_lng' : longitude,
+#         'hospital' : [],
+#         'restaurant' : [],
+#         'parking' : [],
+#         'bus_station' : [],
+#         'bank' : []
+#     }
+
+#     for amenty in amenties:
+#         Location = find_nearby_locations(latitude, longitude, radius, amenty)
+#         print('Fuck',Location)
+#         Context[amenty].append(Location)
+
+#     #print(Context)
+#     return Context
+ 
+@app.post("/amenities/")
+async def find_locations(location_input: LocationInput):
     geolocator = Nominatim(user_agent="get_lat_long")
-    user_location = geolocator.geocode(location.name)
-    if not user_location:
-        raise HTTPException(status_code=404, detail="Location not found")
-    
-    radius = location.radius
+    user_location = geolocator.geocode(location_input.location_name)
     latitude = user_location.latitude
     longitude = user_location.longitude
-    amenties = location.amenties
     
-    
-    print(amenties)
-    
-    Context = {
-        'user_location_name' : location.name,
-        'user_location_lat' : latitude,
-        'user_location_lng' : longitude,
-        'hospital' : [],
-        'restaurant' : [],
-        'parking' : [],
-        'bus_station' : [],
-        'bank' : []
-    }
+    print(location_input)
 
-    for amenty in amenties:
-        Location = find_nearby_locations(latitude, longitude, radius, amenty)
-        print('Fuck',Location)
-        Context[amenty].append(Location)
+    locations = {}
+    for amenty in location_input.amenties:
+        locations[amenty] = find_nearby_locations(latitude, longitude, location_input.radius, amenty)
 
-    #print(Context)
-    return Context
- 
-    
+    return {"user_location_name": location_input.location_name, 
+            "user_location_lat": latitude,
+            "user_location_lng": longitude,
+            "locations": locations}    
 
 @app.post("/socio_economic_factors/", response_model=SocioResponse)
 async def get_socio_economic_factors(request: SocioRequest):

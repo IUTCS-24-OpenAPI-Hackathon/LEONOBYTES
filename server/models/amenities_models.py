@@ -1,21 +1,28 @@
 from pydantic import BaseModel
 from typing import List
 
-class Location(BaseModel):
-    name: str
+
+class LocationInput(BaseModel):
+    location_name: str
     radius: int
     amenties: List[str]
 
 
-class LocationResponse(BaseModel):
-    user_location_name: str
-    user_location_lat: float
-    user_location_lng: float
-    hospitals: list
-    restaurants: list
-    parkings: list
-    bus_stations: list
-    banks: list
+# class Location(BaseModel):
+#     name: str
+#     radius: int
+#     amenties: List[str]
+
+
+# class LocationResponse(BaseModel):
+#     user_location_name: str
+#     user_location_lat: float
+#     user_location_lng: float
+#     hospitals: list
+#     restaurants: list
+#     parkings: list
+#     bus_stations: list
+#     banks: list
 
 
 # class AmenitiesRequest(BaseModel):
