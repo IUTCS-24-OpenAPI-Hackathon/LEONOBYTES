@@ -6,6 +6,8 @@ from models.place_description_models import PlaceDescriptionRequest, PlaceDescri
 from models.attraction_models import AttractionRequest, AttractionResponse
 from utils.classify_attractions import get_tourist_attractions_names
 from models.country_models import CountryNameRequest
+from models.weather_condition_models import WeatherRequest, WeatherResponse
+from utils.weather_report import show_weather
 app = FastAPI()
 
 
@@ -68,5 +70,18 @@ async def get_place_description_endpoint(request: PlaceDescriptionRequest):
     except HTTPException as e:
         raise e
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))    
+        raise HTTPException(status_code=500, detail=str(e))  
+    
+    
+#get weather report
+@app.post("/weather/")
+async def get_weather(request: WeatherRequest):
+    try:
+        weather_data = show_weather(request.place_name)
+        return WeatherResponse(**weather_data)
+    except HTTPException as e:
+        raise e
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+      
     
