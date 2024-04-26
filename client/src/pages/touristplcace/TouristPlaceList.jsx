@@ -14,6 +14,10 @@ import './TouristPlaceList.css'
 const TouristPlaceList = () => {
     const location = useLocation();
     const { touristAttractions } = location.state;
+
+    const navigate = useNavigate();
+    const[pageLoading, setPageLoading] = useState(false);
+    const[buttonLoading, setButtonLoading] = useState(false);
   return (
     <>
         <NavigationBar />
@@ -33,12 +37,11 @@ const TouristPlaceList = () => {
                         <img src="https://plainbackground.com/plain1024/87c560.png" alt={place} />
                         <div className='touristplace_cards_textBox'>
                             <h2>{place}</h2>
-                            <Button>View Details</Button>
+                            <Button onClick = {() => {navigate('/place/description', { state: { place } })}}>View Details</Button>
                         </div>
                     </div>
                 ))}
             </div>
-
           </div>
         </div>
     </>
