@@ -1,6 +1,8 @@
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi import FastAPI, status, HTTPException, Query
 from Countrydetails import countries,country
+from models.attraction_models import AttractionRequest, AttractionResponse
+from utils.classify_attractions import get_tourist_attractions_names
 app = FastAPI()
 
 
@@ -45,4 +47,12 @@ async def get_states(country_name: str = Query(..., title="Country Name", descri
 
     
     
-    
+@app.post("/tourist_attractions/")
+async def get_tourist_attractions(request: AttractionRequest):
+    try:
+        attractions = get_tourist_attractions_names(request.place_name)
+        return AttractionResponse(tourist_attractions=attractions)
+    except HTTPException as e:
+        raise e
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))    
