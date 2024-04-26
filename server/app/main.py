@@ -14,15 +14,26 @@ from utils.country_info import get_country_info, get_capital
 from models.country_info_models import CountryInfoRequest, CountryInfoResponse
 from utils.place_details import get_place_details
 from models.place_description_models import PlaceDescriptionRequest, PlaceDescriptionResponse
-from utils.show_photos import get_place_photos
-from models.place_photo_models import PlacePhotosRequest, PlacePhotosResponse
+from utils.show_photos import fetch_image_link_from_pexels
+from models.place_photo_models import QueryRequest 
 from models.amenities_models import LocationInput
 from utils.show_amenties import find_nearby_locations 
 from typing import List
 from models.socio_factor_models import SocioRequest,SocioResponse
 from utils.socio_eco_factors import chat
+from pydantic import BaseModel
+# from database import User, Comment,
 from geopy.geocoders import Nominatim
+from database import connect_to_database
+from model import User, Place, Comment
+from create_tables import get_search_results_by_userid
+from models.search_table_save import SearchInput, save_search
+import mysql.connector
 
+
+# Connect to the database
+conn = connect_to_database()
+cursor = conn.cursor()
 
 
 
@@ -149,88 +160,27 @@ async def get_country_info_endpoint(request: CountryInfoRequest):
         raise HTTPException(status_code=500, detail=str(e))    
     
     
-#show photos
-@app.post("/place_photos/")
-async def get_place_photos_endpoint(request: PlacePhotosRequest):
-    try:
-
-        photo_urls = get_place_photos(request.place_name)[0:5]
-        
-        return PlacePhotosResponse(photo_urls=photo_urls)
-    except HTTPException as e:
-        raise e
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
-
-# @app.post("/nearby_amenities/")
-# async def get_nearby_amenities_endpoint(request: NearbyAmenitiesRequest):
+# #show photos
+# @app.post("/place_photos/")
+# async def get_place_photos_endpoint(request: PlacePhotosRequest):
 #     try:
-   
-#         amenities = find_nearby_places(request.location_name, request.place_type)
-#         return NearbyAmenitiesResponse(amenities=amenities)
+
+#         photo_urls = get_place_photos(request.place_name)[0:5]
+        
+#         return PlacePhotosResponse(photo_urls=photo_urls)
 #     except HTTPException as e:
 #         raise e
 #     except Exception as e:
-#         raise HTTPException(status_code=500, detail=str(e))    
-   
+#         raise HTTPException(status_code=500, detail=str(e))
 
-# @app.post("/amenities/", response_model=List[AmenityResponse])
-# async def get_nearby_amenities(request: AmenitiesRequest):
-#     try:
-#         geolocator = Nominatim(user_agent="get_lat_long")
-#         location = geolocator.geocode(request.location)
-        
-#         # Check if location is found
-#         if location is None:
-#             raise ValueError("Location not found")
-        
-#         # Use the provided location information
-#         latitude = location.latitude
-#         longitude = location.longitude
-        
-#         # Call the function to find nearby amenities with the provided radius
-#         amenity_results = find_nearby_amenities(latitude, longitude, request.radius, request.amenity)
-        
-#         return amenity_results
-#     except Exception as e:
-#         # Return an empty list if there's an error
-#          return e
+@app.post("/fetch_image_link")
+async def fetch_image_link(query_request: QueryRequest):
+    image_link = fetch_image_link_from_pexels(query_request.query)
+    if "http" in image_link:
+        return {"image_url": image_link}
+    else:
+        raise HTTPException(status_code=404, detail=image_link)
 
-# @app.post("/amenities/", response_model=LocationResponse)
-# async def get_nearby_locations(location: Location):
-    
-#     print(location)
-#     geolocator = Nominatim(user_agent="get_lat_long")
-#     user_location = geolocator.geocode(location.name)
-#     if not user_location:
-#         raise HTTPException(status_code=404, detail="Location not found")
-    
-#     radius = location.radius
-#     latitude = user_location.latitude
-#     longitude = user_location.longitude
-#     amenties = location.amenties
-    
-    
-#     print(amenties)
-    
-#     Context = {
-#         'user_location_name' : location.name,
-#         'user_location_lat' : latitude,
-#         'user_location_lng' : longitude,
-#         'hospital' : [],
-#         'restaurant' : [],
-#         'parking' : [],
-#         'bus_station' : [],
-#         'bank' : []
-#     }
-
-#     for amenty in amenties:
-#         Location = find_nearby_locations(latitude, longitude, radius, amenty)
-#         print('Fuck',Location)
-#         Context[amenty].append(Location)
-
-#     #print(Context)
-#     return Context
  
 @app.post("/amenities/")
 async def find_locations(location_input: LocationInput):
@@ -257,3 +207,66 @@ async def get_socio_economic_factors(request: SocioRequest):
         return SocioResponse(ans=socio_economic_factors)
     except Exception as e:
         return SocioResponse(ans=str(e))
+    
+# @app.post("/user/")
+# async def create_user(user: UserCreate):
+#     return User.create(user.user_id, user.password)
+
+
+# @app.post("/comment/")
+# async def create_comment(comment: CommentCreate):
+#     return Comment.create(comment.place_id, comment.comment_text, comment.user_id)
+
+
+# @app.get("/comments/{place_id}")
+# async def get_comments(place_id: int):
+#     return Comment.get_by_place_id(place_id)
+
+
+
+
+@app.post("/user/")
+async def create_user(user: User):
+    try:
+        cursor.execute("INSERT INTO User (user_id, password) VALUES (%s, %s)", (user.user_id, user.password))
+        conn.commit()
+        return {"message": "User created successfully"}
+    except mysql.connector.Error as e:
+        return {"error": str(e)}
+
+@app.post("/comment/")
+async def create_comment(comment: Comment):
+    try:
+        cursor.execute("INSERT INTO Comments (place_id, comment_text, user_id) VALUES (%s, %s, %s)",
+                       (comment.place_id, comment.comment_text, comment.user_id))
+        conn.commit()
+        return {"message": "Comment added successfully"}
+    except mysql.connector.Error as e:
+        return {"error": str(e)}
+
+@app.get("/comments/{place_id}")
+async def get_comments(place_id: int):
+    try:
+        cursor.execute("SELECT c.comment_text, u.user_id FROM Comments c JOIN User u ON c.user_id = u.user_id WHERE c.place_id = %s", (place_id,))
+        comments = cursor.fetchall()
+        return {"comments": comments}
+    except mysql.connector.Error as e:
+        return {"error": str(e)}
+    
+    
+
+    
+@app.get("/search/{user_id}")
+async def search_results_by_user_id(user_id: int):
+    return get_search_results_by_userid(user_id)    
+
+
+
+@app.post("/save_search_data")
+async def save_search_data(search_input: SearchInput):
+    result = save_search(search_input.user_id, search_input.search_text)
+    if "error" in result:
+        raise HTTPException(status_code=500, detail=result["error"])
+    return result
+
+

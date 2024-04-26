@@ -1,9 +1,8 @@
+from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
+import requests
 
+app = FastAPI()
 
-
-class PlacePhotosRequest(BaseModel):
-    place_name: str
-
-class PlacePhotosResponse(BaseModel):
-    photo_urls: list[str]
+class QueryRequest(BaseModel):
+    query: str
