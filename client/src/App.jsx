@@ -18,7 +18,6 @@ import Chatbot from './pages/chatbot/ChatBot';
 import ChatHover from './pages/chathover/ChatHover';
 import TouristPlace from './pages/touristplcace/TouristPlace';
 import TouristPlaceFind from './pages/touristplcace/TouristPlaceFind';
-import TouristPlaceFindCountry from './pages/touristplcace/TouristPlaceFindCountry';
 import TouristPlaceList from './pages/touristplcace/TouristPlaceList';
 import TouristPlaceDescription from './pages/touristplcace/TouristPlaceDescription';
 

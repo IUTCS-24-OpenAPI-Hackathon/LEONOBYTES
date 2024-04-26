@@ -82,7 +82,9 @@ const TouristPlaceFind = () => {
         console.log(response.data.tourist_attractions);
         setPageLoading(false);
         if(response.data.tourist_attractions){
-          const touristAttractions= response.data.tourist_attractions;
+          const touristAttractions = response.data.tourist_attractions;
+          localStorage.setItem('leonobytescountryname', selectedCountry);
+          localStorage.setItem('leonobytesstatename', selectedState);
           navigate('/place/list', { state: { touristAttractions } });
         }  
         else {
