@@ -31,6 +31,15 @@
         font-size: 1vw;
         margin-top: 1.5vw;
         padding-left: 1.5vw;
+        
+    }
+    .login_mainBox select{
+        width: 22vw;
+        height: 3.5vw;
+        font-size: 1vw;
+        margin-top: 1.5vw;
+        padding-left: 1.5vw;
+        margin-bottom: 1vw;
     }
     .login_mainBox label{
         font-size: 1vw;

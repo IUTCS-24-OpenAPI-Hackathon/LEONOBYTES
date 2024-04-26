@@ -10,7 +10,7 @@ import { apiPath } from '@/utils/apiPath';
 import './TouristPlaceFind.css'
 import { Button } from '@/components/ui/button';
 
-const TouristPlaceFind = () => {
+const TouristPlaceFindCountry = () => {
   const navigate = useNavigate();
   const[pageLoading, setPageLoading] = useState(false);
   const[buttonLoading, setButtonLoading] = useState(false);
@@ -20,8 +20,6 @@ const TouristPlaceFind = () => {
 
   const[allState, setAllState] = useState([]);
   const[selectedState, setSelectedState] = useState('');
-
-  const[allSuggestion, setAllSuggestion] = useState([]);
 
   const [pageNo, setPageNo] = useState(0);
   
@@ -52,38 +50,14 @@ const TouristPlaceFind = () => {
   const getAllState = async () => {
     setPageLoading(true);
     try{
-        const Apipath = `${apiPath}/states`;
+        const Apipath = `${apiPath}/state`;
         const response = await axios.post(Apipath,{
             country_name: selectedCountry
         });
-        console.log(response.data.states);
+        console.log(response.data.countries);
         setPageLoading(false);
         if(response.status){
-          setAllState(response.data.states);
-          setPageNo((pageNo + 1) % 2);
-        }  
-        else {
-          //
-        }
-    }
-    catch(error){
-      setPageLoading(false);
-      console.log(error.message);
-    }
-  }
-
-  const getAllSuggestions = async () => {
-    setPageLoading(true);
-    try{
-        const Apipath = `${apiPath}/tourist_attractions`;
-        const response = await axios.post(Apipath,{
-            place_name: selectedState + ", " + selectedCountry,
-        });
-        console.log(response.data.tourist_attractions);
-        setPageLoading(false);
-        if(response.data.tourist_attractions){
-          const touristAttractions= response.data.tourist_attractions;
-          navigate('/place/list', { state: { touristAttractions } });
+          setAllState(response.data.state);
         }  
         else {
           //
@@ -125,11 +99,9 @@ const TouristPlaceFind = () => {
 
 
   const handlePageNext = () => {
-    if(pageNo == 0){
-      getAllState();
-    }
-    else if(pageNo == 1){
-      getAllSuggestions()
+    if(pageNo == 2){
+      handleCreateProduct();
+      setPageNo(0);
     }
     else setPageNo((pageNo + 1) % 2);
   };
@@ -162,4 +134,4 @@ const TouristPlaceFind = () => {
   )
 }
 
-export default TouristPlaceFind
+export default TouristPlaceFindCountry
