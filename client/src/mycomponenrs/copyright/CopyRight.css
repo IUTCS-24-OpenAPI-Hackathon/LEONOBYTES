@@ -1,0 +1,26 @@
+.copyright{
+    /* height: 5vw; */
+}
+.copyright_mainBox{
+    /* background-color: pink; */
+    display: flex;
+    justify-content: space-between;
+    padding: 1.2vw 0;
+
+    width: 82%;
+    margin: auto;
+    border-top: 1px solid rgba(140,140,100);
+}
+.copyright_textBox{
+    width: 87%;
+    font-size: 1vw;
+    color: rgb(40,40,40);
+}
+.copyright_iconBox{
+    display: flex;
+    justify-content: space-between;
+    width: 13%;
+}
+.copyright_icons{
+    font-size: 1.5vw;
+}

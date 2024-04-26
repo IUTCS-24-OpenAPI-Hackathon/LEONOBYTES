@@ -1,0 +1,114 @@
+.login{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-image: url('https://wallpapers.com/images/hd/microsoft-teams-blur-background-2158-x-1440-dz4xsybgwub3dwps.jpg');
+    background-size: 100vw 100vh;
+    background-repeat: no-repeat;
+    height: 100vh;
+}
+@media (min-width: 767px) {
+    .login_mainBox{
+        width: 28vw;
+        /* height: 30vw; */
+        /* margin-top:9%; */
+        background-color: rgba(0,0,0,0.3);
+        /* background-color: rgb(9,111,88,0.5); */
+        padding: 4% 3%;
+        border-radius: 0.5vw;
+        text-align: center;
+        
+    }
+    .login_mainBox h2{
+        text-align: center;
+        font-size: 2.5vw;
+        margin-bottom: 1.5vw;
+        color: white;
+    }
+    .login_mainBox Input{
+        height: 3.5vw;
+        font-size: 1vw;
+        margin-top: 1.5vw;
+        padding-left: 1.5vw;
+    }
+    .login_mainBox label{
+        font-size: 1vw;
+        color: white;
+    }
+    .login_mainBox p{
+        text-align: center;
+        color: red;
+        font-weight: 600;
+        font-size: 1vw;
+        margin: 0.8vw 0;
+    }
+    .login_mainBox Button{
+        height: 3.5vw;
+        width: 100%;
+        font-size: 1vw;
+        font-weight: 600;
+        background-color: white;
+        transition: linear 0.1s;
+        margin-bottom: 1vw;
+        color:black;
+    }
+    .login_mainBox_link{
+        color: white;
+        font-size: 1vw;
+        margin-bottom: 0.5vw;
+    }
+}
+
+@media (max-width: 766px) {
+    .login_mainBox{
+        width: 80vw;
+        /* height: 120vw; */
+        background-color: rgba(0,0,0,0.3);
+        padding: 18% 7%;
+        border-radius: 0.5vw;
+        text-align: center;
+        
+    }
+    .login_mainBox h2{
+        text-align: center;
+        font-size: 6vw;
+        margin-bottom: 3.5vw;
+        color: white;
+    }
+    .login_mainBox Input{
+        height: 12vw;
+        font-size: 3.2vw;
+        margin-top: 4.5vw;
+    }
+    .login_mainBox p{
+        text-align: center;
+        color: red;
+        font-weight: 600;
+        font-size: 3vw;
+        margin: 3vw 0;
+    }
+    .login_mainBox Button{
+        height: 12vw;
+        width: 100%;
+        font-size: 3.5vw;
+        font-weight: 600;
+        background-color: white;
+        transition: linear 0.1s;
+        margin-bottom: 1vw;
+    }
+
+    .login_mainBox_link{
+        color: white;
+        font-size: 3.5vw;
+        margin-bottom: 0.5vw;
+    }
+}
+
+.login_mainBox Button:hover{
+    background-color: rgb(37,90,84);
+    color: white;
+}
+.login_mainBox_link:hover{
+    color: aqua;
+}

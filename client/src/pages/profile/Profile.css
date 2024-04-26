@@ -1,0 +1,126 @@
+@media screen and (min-width: 992px) {
+    .profile{
+        width: 100%;
+        min-height: 100vh;
+        background: linear-gradient(to bottom left, rgb(218,240,235), rgb(255,255,255));
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding-top: 7vw;
+    }
+    .profile_card{
+        background-color: rgb(0,0,0,0.2);
+        width: 23vw;
+        padding: 2.5vw 2vw;
+        border-radius: 0.8vw;
+    }
+    .profile_card img{
+        width: 100%;
+        border-radius: 0.7vw;
+        margin-bottom: 1vw;
+    }
+    .profile_card h2{
+        text-align: center;
+        font-weight: 600;
+        font-size: 1.3vw;
+        margin-bottom: 0.3vw;
+    }
+    .profile_card h3{
+        text-align: center;
+        font-size: 1vw;
+        margin-bottom: 0.3vw;
+    }
+    .profile_card p{
+        text-align: center;
+        font-size: 1vw;
+        margin-bottom: 1.5vw;
+        
+    }
+    .profile button{
+        background-color: rgb(240,240,240);
+        color: black;
+        padding: 1vw;
+        border-radius: 0.3vw;
+        text-align: left;
+        margin-bottom: 1vw;
+        font-weight: 500;
+        transition: linear 0.1s;
+    }
+    .profile_buttons{
+        background-color: rgb(240,240,240);
+        color: black;
+        padding: 1vw;
+        border-radius: 0.3vw;
+        margin-bottom: 1vw;
+        font-weight: 500;
+        transition: linear 0.1s;
+    }
+}
+@media screen and (max-width: 992px) {
+    .profile{
+        width: 100%;
+        min-height: 89vh;
+        background: linear-gradient(to bottom left, rgb(218,240,235), rgb(255,255,255));
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .profile_card{
+        background-color: rgb(0,0,0,0.2);
+        width: 80vw;
+        padding: 10vw 8vw;
+        border-radius: 3vw;
+    }
+    .profile_card img{
+        width: 100%;
+        margin: auto;
+        border-radius: 2.5vw;
+        margin-bottom: 1vw;
+    }
+    .profile_card h2{
+        text-align: center;
+        font-weight: 600;
+        font-size: 5vw;
+        margin-bottom: 0.3vw;
+    }
+    .profile_card h3{
+        text-align: center;
+        font-size: 4.5vw;
+        margin-bottom: 0.3vw;
+    }
+    .profile_card p{
+        text-align: center;
+        font-size: 4.5vw;
+        margin-bottom: 2.5vw;
+        
+    }
+    .profile button{
+        background-color: rgb(240,240,240);
+        color: black;
+        padding: 2vw 3vw;
+        border-radius: 0.3vw;
+        text-align: left;
+        margin-bottom: 1vw;
+        font-weight: 500;
+        transition: linear 0.1s;
+        font-size: 4vw;
+    }
+    .profile_buttons{
+        background-color: rgb(240,240,240);
+        color: black;
+        padding: 2vw 3vw;
+        border-radius: 0.3vw;
+        margin-bottom: 1vw;
+        font-weight: 500;
+        transition: linear 0.1s;
+        font-size: 4vw;
+    }
+}
+.profile button:hover{
+    color: white;
+    background-color: rgb(80,80,80);
+}
+.profile_buttons:hover{
+    color: white;
+    background-color: rgb(80,80,80);
+}

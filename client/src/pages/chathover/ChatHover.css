@@ -1,0 +1,254 @@
+@media (min-width: 768px) {
+  .chathover{
+    position: fixed;
+    bottom:5vw;
+    right: 5vw;
+  }
+    .chathover_message{
+      height: 30vw;
+      width: 22vw;
+      background-color: rgb(138,178,167);
+      overflow: hidden;
+      transition: linear 0.15s;
+    }
+    .chathover_message_minimize{
+      transform: translate(10vw, 15vw) scale(0);
+    }
+    .chathover_message_mainBox{
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+    .chathover_message_header{
+      height: 3.5vw;
+      display: flex;
+      align-items: center;
+      padding: 0 1vw;
+      border-bottom: 1px solid rgb(235,235,235);
+      color: white;
+      font-weight: 550;
+      font-size: 1.2vw;
+      background-color: rgb(132,183,171);
+      width: 100%;
+    }
+    .chathover_message_header_icon{
+      visibility: hidden;
+    }
+    .chathover_messageBox {
+      height: 23.5vw;
+      overflow-y: auto;
+      padding:  1vw;
+      display: flex;
+      flex-direction: column;
+    }
+  
+    .chathover_messages {
+      margin-bottom: 0.2vw;
+      padding: 0.5vw 1vw;
+      border-radius: 1vw;
+      width: fit-content;
+      font-size: 1vw;
+      max-width: 90%;
+    }
+    .chathover_myMessage {
+      /* background-color: rgb(43,50,76); */
+      background-color: rgb(9,111,88);
+      color: white;
+      margin-bottom: 0.5vw;
+      margin-left: auto;
+    }
+    .chathover_othersMessage {
+      background-color: #E8E8E8;
+      color: black;
+      margin-bottom: 1vw;
+      margin-right: auto;
+    }
+    .chathover_start{
+      text-align: center;
+      color: white;
+      font-size: 2vw;
+      font-weight: 600;
+      margin: auto;
+      margin-top: 13vw;
+    }
+      
+    .chathover_input {
+      width: 90%;
+      height: 3vw;
+      display: flex;
+      position: absolute;
+      bottom: 2%;
+      left: 5%;
+      background-color: rgb(138,178,167);
+    }
+      
+    .chathover_inputField {
+      flex: 1;
+      padding: 0 2vw;
+      border-radius: 2vw;
+      border: 1px solid #ccc;
+      margin-right: 10px;
+      outline: none;
+      font-size: 1vw;
+    }
+      
+    .chathover_inputSendButtonBox{
+      width: 8%;
+      height: 100%;
+      display: flex;
+    }
+    .chathover_inputSendButton{
+      font-size: 2vw;
+      color: rgb(9,111,88);
+      cursor: pointer;
+      transition: linear 0.1s;
+    }
+
+    .chathover_bottombuttons{
+      position: relative;
+    }
+    .chathover_bottombuttons_button{
+      position: absolute;
+      right: 0;
+      background-color: rgb(0,0,0,0.3);
+      height: 3.5vw;
+      width: 3.5vw;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .chathover_bottombuttons_icons{
+      font-size: 1.7vw;
+      color: white;
+    }
+  }
+  
+@media (max-width: 767px) {
+  .chathover{
+    position: fixed;
+    bottom:15vw;
+    right: 5vw;
+  }
+    .chathover_message{
+      height: 140vw;
+      width: 90vw;
+      background-color: rgb(138,178,167);
+      overflow: hidden;
+      transition: linear 0.15s;
+    }
+    .chathover_message_minimize{
+      transform: translate(40vw, 70vw) scale(0);
+    }
+    .chathover_message_mainBox{
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+    .chathover_message_header{
+      height: 14vw;
+      display: flex;
+      align-items: center;
+      padding: 0 4vw;
+      border-bottom: 1px solid rgb(235,235,235);
+      color: white;
+      font-weight: 550;
+      font-size: 5vw;
+      background-color: rgb(132,183,171);
+      width: 100%;
+    }
+    .chathover_message_header_icon{
+      visibility: hidden;
+    }
+    .chathover_messageBox {
+      height: 116vw;
+      overflow-y: auto;
+      padding:  4vw;
+      display: flex;
+      flex-direction: column;
+    }
+  
+    .chathover_messages {
+      margin-bottom: 0.2vw;
+      padding: 2vw 4vw;
+      border-radius: 4vw;
+      width: fit-content;
+      font-size: 3vw;
+      max-width: 90%;
+    }
+    .chathover_myMessage {
+      /* background-color: rgb(43,50,76); */
+      background-color: rgb(9,111,88);
+      color: white;
+      margin-bottom: 2vw;
+      margin-left: auto;
+    }
+    .chathover_othersMessage {
+      background-color: #E8E8E8;
+      color: black;
+      margin-bottom: 3vw;
+      margin-right: auto;
+    }
+    .chathover_start{
+      text-align: center;
+      color: white;
+      font-size: 2vw;
+      font-weight: 600;
+      margin: auto;
+      margin-top: 13vw;
+    }
+      
+    .chathover_input {
+      width: 90%;
+      height: 10vw;
+      display: flex;
+      position: absolute;
+      bottom: 2%;
+      left: 5%;
+      background-color: rgb(138,178,167);
+    }
+      
+    .chathover_inputField {
+      flex: 1;
+      padding: 0 4vw;
+      border-radius: 4vw;
+      border: 1px solid #ccc;
+      margin-right: 10px;
+      outline: none;
+      font-size: 3vw;
+    }
+      
+    .chathover_inputSendButtonBox{
+      width: 8%;
+      height: 100%;
+      display: flex;
+    }
+    .chathover_inputSendButton{
+      font-size: 9vw;
+      color: rgb(9,111,88);
+      cursor: pointer;
+      transition: linear 0.1s;
+    }
+
+    .chathover_bottombuttons{
+      position: relative;
+    }
+    .chathover_bottombuttons_button{
+      position: absolute;
+      right: 0;
+      background-color: rgb(0,0,0,0.3);
+      height: 7vw;
+      width: 7vw;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .chathover_bottombuttons_icons{
+      font-size: 4vw;
+      color: white;
+    }
+}
+.chathover_inputSendButton:hover{
+  color: white;
+}

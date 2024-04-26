@@ -1,0 +1,99 @@
+.signup{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-image: url('https://wallpapers.com/images/hd/microsoft-teams-blur-background-2158-x-1440-dz4xsybgwub3dwps.jpg');
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    min-height: 100vh;
+}
+@media (min-width: 767px) {
+    .signup_mainBox{
+        width: 28vw;
+        /* height: 37vw; */
+        background-color: rgba(0,0,0,0.3);
+        padding: 4% 3%;
+        border-radius: 0.5vw;
+        text-align: center;
+    }
+    .signup_mainBox h2{
+        text-align: center;
+        font-size: 2.3vw;
+        margin-bottom: 1.5vw;
+        color: white;
+    }
+    .signup_mainBox Input{
+        height: 3.5vw;
+        font-size: 1vw;
+        margin-top: 1.5vw;
+        padding-left: 1vw;
+    }
+    .signup_mainBox p{
+        text-align: center;
+        color: red;
+        font-weight: 600;
+        font-size: 1vw;
+        margin: 0.8vw 0;
+    }
+    .signup_mainBox Button{
+        height: 3.5vw;
+        width: 100%;
+        font-size: 1vw;
+        font-weight: 600;
+        transition: linear 0.1;
+        background-color: white;
+        margin-bottom: 1vw;
+    }
+    .signup_signToLog{
+        color: white;   
+    }
+}
+@media (max-width: 766px) {
+    .signup_mainBox{
+        width: 80vw;
+        height: 135vw;
+        background-color: rgba(0,0,0,0.3);
+        padding: 18% 7%;
+        border-radius: 0.5vw;
+        text-align: center;
+        
+    }
+    .signup_mainBox h2{
+        text-align: center;
+        font-size: 6vw;
+        margin-bottom: 3.5vw;
+        color: white;
+    }
+    .signup_mainBox Input{
+        height: 12vw;
+        font-size: 3.2vw;
+        margin-top: 4.5vw;
+    }
+    .signup_mainBox p{
+        text-align: center;
+        color: red;
+        font-weight: 600;
+        font-size: 3vw;
+        margin: 3vw 0;
+    }
+    .signup_mainBox Button{
+        height: 12vw;
+        width: 100%;
+        font-size: 3.5vw;
+        font-weight: 600;
+        background-color: white;
+        transition: linear 0.1s;
+        margin-bottom: 1vw;
+    }
+
+    .signup_signToLog{
+        font-size: 3.2vw;
+        color: white;   
+    }
+}
+
+.signup_mainBox Button:hover{
+    background-color: rgb(37,90,84);
+    color: white;
+}

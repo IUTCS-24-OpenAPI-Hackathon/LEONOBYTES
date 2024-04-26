@@ -1,0 +1,17 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap');
+
+*{
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+html{
+  scroll-behavior: smooth;
+}
+body {
+    font-family: 'Poppins', sans-serif;
+    /* font-family: 'Ubuntu';
+    src: local('Ubuntu'), local('Ubuntu-Regular'), url('./ubuntu.woff2') format('woff2'); */
+    /* font-weight: 500;  */
+    /* font-style: normal;  */
+}

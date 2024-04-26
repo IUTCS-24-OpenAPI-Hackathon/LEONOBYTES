@@ -1,0 +1,141 @@
+.homapage_heromain{
+    width: 100%;
+    background-color: rgb(250,253,252);
+}
+@media screen and (min-width: 992px) {
+    .homapage_heromain_mainBox{
+        width: 82%;
+        margin: auto;
+        display: flex;
+        justify-content: space-between;
+        padding-top: 8vw;
+        padding-bottom: 6vw;
+    }
+    .homapage_heromain_textBox{
+        width: 50%;
+        color: white;
+        padding-top: 4vw;
+    }
+    .homapage_heromain_textBox p{
+        font-size: 1vw;
+        margin-bottom: 1vw;
+        color: rgb(254,206,114);
+        font-weight: 600;
+    }
+
+    .homapage_heromain_textBox h1{
+        font-size: 3.5vw;
+        font-weight: 650;
+        margin-bottom: 1.5vw;
+        line-height: 4.5vw;
+        color: rgb(39,90,84);
+        
+    }
+    .homapage_heromain_textBox h2{
+        font-size: zvw;
+        margin-bottom: 1vw;
+        color: rgb(120,120,120);
+        font-weight: 500;
+        width: 80%;
+    }
+    .homapage_heromain_textBox_inputBox{
+        display: flex;
+        justify-content: space-between;
+        height: 3vw;
+        width: 75%;
+        margin-top: 3vw;
+        font-size: 1vw;
+
+    }
+    .homapage_heromain_textBox_inputBox input{
+        border: 1px solid black;
+        width: 72%;
+        border-radius: 0.5vw;
+        padding: 0 1vw;
+    }
+    .homapage_heromain_textBox button{
+        width: 25%;
+        background-color: rgb(28,81,76);
+        color: white;
+        height: 100%;
+        border-radius: 0.5vw;
+        transition: linear 0.1s;
+    }
+    .homapage_heromain_imageBox{
+        width: 42%;
+        /* height: 22vw; */
+        /* margin-top: 5vw; */
+    }
+    .homapage_heromain_imageBox img{
+        /* height: 22vw; */
+        width: 100%;
+        height: 100%;
+        border-radius: 1vw;
+        /* margin-top: 5vw; */
+    }
+}
+
+@media screen and (max-width: 991px) {
+    .homapage_heromain_mainBox{
+        width: 80%;
+        margin: auto;
+        /* display: flex;
+        justify-content: space-between; */
+        padding-top: 24vw;
+        padding-bottom: 11vw;
+    }
+    .homapage_heromain_textBox{
+        color: white;
+    }
+    .homapage_heromain_textBox p{
+        font-size: 3.5vw;
+        margin-bottom: 1vw;
+        color: rgb(254,206,114);
+    }
+    .homapage_heromain_textBox h1{
+        font-size: 7vw;
+        font-weight: 650;
+        margin-bottom: 1.5vw;
+        color: rgb(39,90,84);
+    }
+    .homapage_heromain_textBox h2{
+        font-size: 3.5vw;
+        margin-bottom: 1vw;
+        color: rgb(120,120,120);
+    }
+    .homapage_heromain_textBox_inputBox{
+        display: flex;
+        justify-content: space-between;
+        height: 9vw;
+        margin-top: 5vw;
+        font-size: 3vw;
+
+    }
+    .homapage_heromain_textBox_inputBox input{
+        border: 1px solid black;
+        width: 72%;
+        border-radius: 0.5vw;
+        padding: 0 3vw;
+    }
+    .homapage_heromain_textBox button{
+        width: 25%;
+        background-color: rgb(28,81,76);
+        color: white;
+        padding: 1.5vw 3vw;
+        border-radius: 2vw;
+        transition: linear 0.1s;
+        
+    }
+    .homapage_heromain_imageBox{
+        display: flex;
+    }
+    .homapage_heromain_imageBox img{
+        height: 90vw;
+        width: 100%;
+        border-radius: 1vw;
+        margin-top: 10vw;
+    }
+}
+.homapage_heromain_textBox button:hover{
+    transform: scale(1.05);
+}
