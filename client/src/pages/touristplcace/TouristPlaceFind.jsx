@@ -30,7 +30,7 @@ const TouristPlaceFind = () => {
     try{
         const Apipath = `${apiPath}/countries`;
         const response = await axios.get(Apipath);
-        console.log(response.data.countries);
+        //console.log(response.data.countries);
         setPageLoading(false);
         if(response.status){
           setAllCountry(response.data.countries);
@@ -50,14 +50,14 @@ const TouristPlaceFind = () => {
   }, []);
 
   const getAllState = async () => {
-    setPageLoading(true);
+    setButtonLoading(true);
     try{
         const Apipath = `${apiPath}/states`;
         const response = await axios.post(Apipath,{
             country_name: selectedCountry
         });
-        console.log(response.data.states);
-        setPageLoading(false);
+        //console.log(response.data.states);
+        setButtonLoading(false);
         if(response.status){
           setAllState(response.data.states);
           setPageNo((pageNo + 1) % 2);
@@ -73,14 +73,14 @@ const TouristPlaceFind = () => {
   }
 
   const getAllSuggestions = async () => {
-    setPageLoading(true);
+    setButtonLoading(true);
     try{
         const Apipath = `${apiPath}/tourist_attractions`;
         const response = await axios.post(Apipath,{
             place_name: selectedState + ", " + selectedCountry,
         });
         console.log(response.data.tourist_attractions);
-        setPageLoading(false);
+        setButtonLoading(false);
         if(response.data.tourist_attractions){
           const touristAttractions = response.data.tourist_attractions;
           localStorage.setItem('leonobytescountryname', selectedCountry);
@@ -102,7 +102,7 @@ const TouristPlaceFind = () => {
         <>
             <h2>Select country</h2>
             <select id="selector" value={selectedCountry} onChange={(event) => {setSelectedCountry(event.target.value);}} >
-                <option value="">Select a category</option>    
+                <option value="">Select Country</option>    
                 {allCountry && allCountry.map((country) => (
                     <option value={country} key={country}>{country}</option>
                 ))}
@@ -157,7 +157,12 @@ const TouristPlaceFind = () => {
             {renderContent()}
             <div className='createproduct_buttons'>
               <Button variant="outline" onClick={()=>handlePagePrev()}>Prev</Button>
-              <Button variant="outline" onClick={()=>handlePageNext()}>Next</Button>
+              <Button variant="outline" onClick={()=>handlePageNext()}>
+                { buttonLoading? 
+                    <ButtonLoading/>:
+                    'Next'
+                }
+              </Button>
             </div>
         </div>
     </div>

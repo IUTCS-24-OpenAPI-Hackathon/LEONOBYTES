@@ -44,6 +44,7 @@
 .touristplacedescription_middleBox_items h2{
     font-size: 1.4vw;
     margin-bottom: 0.5vw;
+    font-weight: 500;
 }
 
 .touristplacedescription_description{
@@ -53,13 +54,16 @@
     margin-bottom: 4vw;
 }
 .touristplacedescription_description h2{
-    font-size: 1.7vw;
-    font-weight: 500;
+    font-size: 2vw;
+    font-weight: 600;
+    margin-bottom: 1vw;
+}
+.touristplacedescription_description p{
     margin-bottom: 1vw;
 }
 
 .touristplacedescription_album{
-    width: 82%;
+    width: 80%;
     margin: auto;
 }
 .touristplacedescription_album_photos{
@@ -70,12 +74,16 @@
 }
 .touristplacedescription_album h2{
     margin-bottom: 1vw;
-    text-align: center;
-    font-weight: 500;
+    /* text-align: center; */
+    font-weight: 650;
 }
 .touristplacedescription_album_photos img{
     width: 23%;
     aspect-ratio: 1;
     margin-bottom: 3vw;
     border-radius: 1vw;
+    transition: ease 0.1s;
+}
+.touristplacedescription_album_photos img:hover{
+    transform: scale(1.05);
 }
