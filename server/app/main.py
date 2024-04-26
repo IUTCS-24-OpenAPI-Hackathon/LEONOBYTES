@@ -16,10 +16,13 @@ from utils.place_details import get_place_details
 from models.place_description_models import PlaceDescriptionRequest, PlaceDescriptionResponse
 from utils.show_photos import get_place_photos
 from models.place_photo_models import PlacePhotosRequest, PlacePhotosResponse
-from models.amenities_models import NearbyAmenitiesRequest, NearbyAmenitiesResponse
-from utils.show_amenties import find_nearby_places
+from models.amenities_models import AmenitiesRequest,AmenityResponse
+from utils.show_amenties import find_nearby_amenities
+from typing import List
 from models.socio_factor_models import SocioRequest,SocioResponse
 from utils.socio_eco_factors import chat
+from geopy.geocoders import Nominatim
+
 app = FastAPI()
 
 
@@ -156,17 +159,40 @@ async def get_place_photos_endpoint(request: PlacePhotosRequest):
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-@app.post("/nearby_amenities/")
-async def get_nearby_amenities_endpoint(request: NearbyAmenitiesRequest):
-    try:
+# @app.post("/nearby_amenities/")
+# async def get_nearby_amenities_endpoint(request: NearbyAmenitiesRequest):
+#     try:
    
-        amenities = find_nearby_places(request.location_name, request.place_type)
-        return NearbyAmenitiesResponse(amenities=amenities)
-    except HTTPException as e:
-        raise e
+#         amenities = find_nearby_places(request.location_name, request.place_type)
+#         return NearbyAmenitiesResponse(amenities=amenities)
+#     except HTTPException as e:
+#         raise e
+#     except Exception as e:
+#         raise HTTPException(status_code=500, detail=str(e))    
+   
+
+@app.post("/amenities/", response_model=List[AmenityResponse])
+async def get_nearby_amenities(request: AmenitiesRequest):
+    try:
+        geolocator = Nominatim(user_agent="get_lat_long")
+        location = geolocator.geocode(request.location)
+        
+        # Check if location is found
+        if location is None:
+            raise ValueError("Location not found")
+        
+        # Use the provided location information
+        latitude = location.latitude
+        longitude = location.longitude
+        
+        # Call the function to find nearby amenities with the provided radius
+        amenity_results = find_nearby_amenities(latitude, longitude, request.radius, request.amenity)
+        
+        return amenity_results
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))    
-    
+        # Return an empty list if there's an error
+         return e
+ 
     
 
 @app.post("/socio_economic_factors/", response_model=SocioResponse)

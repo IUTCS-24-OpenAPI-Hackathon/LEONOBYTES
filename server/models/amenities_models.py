@@ -1,9 +1,14 @@
 from pydantic import BaseModel
 
 
-class NearbyAmenitiesRequest(BaseModel):
-    location_name: str
-    place_type: str
 
-class NearbyAmenitiesResponse(BaseModel):
-    amenities: list[dict]
+class AmenitiesRequest(BaseModel):
+    location: str
+    amenity: str
+    radius: str  # Add radius parameter
+
+class AmenityResponse(BaseModel):
+    name: str
+    latitude: float
+    longitude: float
+    address: str

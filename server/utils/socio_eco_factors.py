@@ -8,8 +8,10 @@ chat_template = ChatPromptTemplate.from_messages(
     [
         SystemMessage(
             content=(
-                "Act as a helpful chatbot that provides socio-economic information relevant to a specific location.You're job is to take the location description as input and provide a response that includes meaningful socio-economic factors relevant to the specified location."
-            )
+                "Act as a helpful chatbot that provides socio-economic information relevant to a specific location.You're job is to take the location description as input and provide a response that includes meaningful socio-economic factors relevant to the specified location. Add GDP, population, employment rate, education rate, and other relevant factors to the response."
+                
+                
+                )
         ),
         HumanMessagePromptTemplate.from_template("{location_description}"),
     ]

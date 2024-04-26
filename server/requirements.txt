@@ -11,3 +11,5 @@ langchain-community
 langchain-openai
 googlemaps
 langchain-google-vertexai
+overpy
+geopy
