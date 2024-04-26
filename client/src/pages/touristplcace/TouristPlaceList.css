@@ -1,0 +1,35 @@
+.touristplacelist_mainBox{
+    width: 90%;
+    margin: auto;
+    padding-top: 8vw;
+    
+}
+.touristplacelist_mainBox h1{
+    text-align: center;
+    color: black;
+    font-size: 2vw;
+    font-weight: 600;
+    margin-bottom: 2vw;
+}
+.touristplacelist_cardBox{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content:space-between;
+
+}
+.touristplacelist_card{
+    background-color: rgb(9,111,88);
+    color: white;
+    width: 18%;
+    border-radius: 0.5vw;
+    padding: 1vw;
+    margin-bottom: 1vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    transition: linear 0.1s;
+}
+.touristplacelist_card:hover{
+    background-color: rgb(9,111,88,0.8);
+}
