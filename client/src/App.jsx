@@ -17,6 +17,9 @@ import Chats from './pages/chats/Chats';
 import Chatbot from './pages/chatbot/ChatBot';
 import ChatHover from './pages/chathover/ChatHover';
 import TouristPlace from './pages/touristplcace/TouristPlace';
+import TouristPlaceFind from './pages/touristplcace/TouristPlaceFind';
+import TouristPlaceFindCountry from './pages/touristplcace/TouristPlaceFindCountry';
+import TouristPlaceList from './pages/touristplcace/TouristPlaceList';
 
 const App = () => {
   const NotLoggedIn = checkLogin();
@@ -35,7 +38,9 @@ const App = () => {
             <Route path="/auth/resetpassword" element={NotLoggedIn ? <ResetPassword /> : <Navigate to="/profile" replace />} />
             <Route path="/chathover" element={<ChatHover/>} />
             <Route path="/chats" element={<Chats />} />
-            <Route path="/touristplace" element={<TouristPlace />} />
+            <Route path="/place/find" element={<TouristPlaceFind />} />
+            <Route path="/place/list" element={<TouristPlaceList />} />
+            <Route path="/place/suggestions" element={<TouristPlace />} />
             <Route element={<PrivateRoute />}>
               <Route path="/profile" element={<Profile/>} />
               <Route path="/profile/edit" element={<ProfileEdit/>} />

@@ -1,0 +1,17 @@
+.touristplacefind_buttons{
+    
+}
+.touristplacefind_inputBox{
+    width: 100%;
+    background-color: red;
+}
+.createproduct_buttons{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+.createproduct_buttons Button{
+    width: 48%;
+    background-color: rgb(9,111,88);
+    color: white;
+}

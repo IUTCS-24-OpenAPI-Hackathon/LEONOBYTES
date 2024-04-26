@@ -127,7 +127,7 @@ const NavigationBar = () => {
             <div className='homepage_navigation_navMenu'>
               <div className="my-auto homepage_navigation_navSubMenu">
                 <Link to="/" className='homepage_navigation_navMenuPageLinks'>Home</Link> 
-                <Link to="/touristplace" className='homepage_navigation_navMenuPageLinks'>places</Link> 
+                <Link to="/place/find" className='homepage_navigation_navMenuPageLinks'>places</Link> 
                 {!notLoggedIn &&
                   (
                     <>
