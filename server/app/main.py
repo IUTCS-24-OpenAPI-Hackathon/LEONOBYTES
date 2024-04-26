@@ -10,6 +10,8 @@ from models.weather_condition_models import WeatherRequest, WeatherResponse
 from utils.weather_report import show_weather
 from utils.aqi_report import get_air_quality
 from models.aqi_models import CityAQIRequest, CityAQIResponse
+from utils.country_info import get_country_info, get_capital
+from models.country_info_models import CountryInfoRequest, CountryInfoResponse
 app = FastAPI()
 
 
@@ -111,4 +113,22 @@ async def get_city_aqi(request: CityAQIRequest):
         raise e
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
-    
+
+
+
+#get capitials nearby , currencies and borders
+
+@app.post("/country_info/")
+async def get_country_info_endpoint(request: CountryInfoRequest):
+    try:
+        currencies, borders = get_country_info(request.country_name)
+        capitals = [get_capital(request.country_name)]
+        for country in borders:
+            capital = get_capital(country)
+            capitals.append(capital)
+        
+        return CountryInfoResponse(country_name=request.country_name, currencies=currencies, borders=borders, capitals=capitals)
+    except HTTPException as e:
+        raise e
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))    
