@@ -18,7 +18,8 @@ from utils.show_photos import get_place_photos
 from models.place_photo_models import PlacePhotosRequest, PlacePhotosResponse
 from models.amenities_models import NearbyAmenitiesRequest, NearbyAmenitiesResponse
 from utils.show_amenties import find_nearby_places
-
+from models.socio_factor_models import SocioRequest,SocioResponse
+from utils.socio_eco_factors import chat
 app = FastAPI()
 
 
@@ -71,6 +72,7 @@ async def get_tourist_attractions(request: AttractionRequest):
         raise e
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))    
+    
     
 #get place description    
 @app.post("/place_description/")
@@ -180,3 +182,13 @@ async def get_nearby_amenities_endpoint(request: NearbyAmenitiesRequest):
         raise e
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))    
+    
+    
+
+@app.post("/socio_economic_factors/", response_model=SocioResponse)
+async def get_socio_economic_factors(request: SocioRequest):
+    try:
+        socio_economic_factors = chat(request.location_description)
+        return SocioResponse(ans=socio_economic_factors)
+    except Exception as e:
+        return SocioResponse(ans=str(e))
