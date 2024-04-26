@@ -14,6 +14,9 @@ from utils.country_info import get_country_info, get_capital
 from models.country_info_models import CountryInfoRequest, CountryInfoResponse
 from utils.place_details import get_place_details
 from models.place_details_models import PlaceDetailsRequest, PlaceDetailsResponse
+from utils.show_photos import get_place_photos
+from models.place_photo_models import PlacePhotosRequest, PlacePhotosResponse
+
 app = FastAPI()
 
 
@@ -152,4 +155,16 @@ async def get_place_details_endpoint(request: PlaceDetailsRequest):
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
+#show photos
+@app.post("/place_photos/")
+async def get_place_photos_endpoint(request: PlacePhotosRequest):
+    try:
+
+        photo_urls = get_place_photos(request.place_name)[0:5]
+        
+        return PlacePhotosResponse(photo_urls=photo_urls)
+    except HTTPException as e:
+        raise e
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
     
