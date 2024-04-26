@@ -16,12 +16,15 @@ from utils.place_details import get_place_details
 from models.place_description_models import PlaceDescriptionRequest, PlaceDescriptionResponse
 from utils.show_photos import get_place_photos
 from models.place_photo_models import PlacePhotosRequest, PlacePhotosResponse
-from models.amenities_models import AmenitiesRequest,AmenityResponse
-from utils.show_amenties import find_nearby_amenities
+from models.amenities_models import LocationResponse,Location
+from utils.show_amenties import find_nearby_locations 
 from typing import List
 from models.socio_factor_models import SocioRequest,SocioResponse
 from utils.socio_eco_factors import chat
 from geopy.geocoders import Nominatim
+
+
+
 
 app = FastAPI()
 
@@ -171,27 +174,63 @@ async def get_place_photos_endpoint(request: PlacePhotosRequest):
 #         raise HTTPException(status_code=500, detail=str(e))    
    
 
-@app.post("/amenities/", response_model=List[AmenityResponse])
-async def get_nearby_amenities(request: AmenitiesRequest):
-    try:
-        geolocator = Nominatim(user_agent="get_lat_long")
-        location = geolocator.geocode(request.location)
+# @app.post("/amenities/", response_model=List[AmenityResponse])
+# async def get_nearby_amenities(request: AmenitiesRequest):
+#     try:
+#         geolocator = Nominatim(user_agent="get_lat_long")
+#         location = geolocator.geocode(request.location)
         
-        # Check if location is found
-        if location is None:
-            raise ValueError("Location not found")
+#         # Check if location is found
+#         if location is None:
+#             raise ValueError("Location not found")
         
-        # Use the provided location information
-        latitude = location.latitude
-        longitude = location.longitude
+#         # Use the provided location information
+#         latitude = location.latitude
+#         longitude = location.longitude
         
-        # Call the function to find nearby amenities with the provided radius
-        amenity_results = find_nearby_amenities(latitude, longitude, request.radius, request.amenity)
+#         # Call the function to find nearby amenities with the provided radius
+#         amenity_results = find_nearby_amenities(latitude, longitude, request.radius, request.amenity)
         
-        return amenity_results
-    except Exception as e:
-        # Return an empty list if there's an error
-         return e
+#         return amenity_results
+#     except Exception as e:
+#         # Return an empty list if there's an error
+#          return e
+
+@app.post("/amenities/", response_model=LocationResponse)
+async def get_nearby_locations(location: Location):
+    
+    print(location)
+    geolocator = Nominatim(user_agent="get_lat_long")
+    user_location = geolocator.geocode(location.name)
+    if not user_location:
+        raise HTTPException(status_code=404, detail="Location not found")
+    
+    radius = location.radius
+    latitude = user_location.latitude
+    longitude = user_location.longitude
+    amenties = location.amenties
+    
+    
+    print(amenties)
+    
+    Context = {
+        'user_location_name' : location.name,
+        'user_location_lat' : latitude,
+        'user_location_lng' : longitude,
+        'hospital' : [],
+        'restaurant' : [],
+        'parking' : [],
+        'bus_station' : [],
+        'bank' : []
+    }
+
+    for amenty in amenties:
+        Location = find_nearby_locations(latitude, longitude, radius, amenty)
+        print('Fuck',Location)
+        Context[amenty].append(Location)
+
+    #print(Context)
+    return Context
  
     
 

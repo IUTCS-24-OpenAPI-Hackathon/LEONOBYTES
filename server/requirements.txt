@@ -13,3 +13,5 @@ googlemaps
 langchain-google-vertexai
 overpy
 geopy
+sqlalchemy
+mysql-connector-python
