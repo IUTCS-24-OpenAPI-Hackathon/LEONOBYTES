@@ -1,0 +1,49 @@
+.chatlist{
+    width: 28%;
+    border-right: 1px solid rgb(220,220,220);
+    /* width: 100%;
+    background: linear-gradient(to bottom left, rgb(218,240,235), rgb(255,255,255));
+    background-color: red; */
+}
+.chatlist_mainBox{
+    /* width: 30vw;
+    background-color: pink;
+    background-color: rgb(9,111,88,0.4); */
+    background: white;
+    /* min-height: 89vh; */
+    height: 43vw;
+    margin: auto;
+}
+.chatlist h2{
+    background-color: rgb(9,111,110);
+    text-align: center;
+    color: white;
+    font-size: 2vw;
+    padding: 1vw;
+    width: 100%;
+    margin: auto;
+    margin-bottom: 1vw;
+    font-weight: 600;
+    border-bottom: 1px solid white;
+}
+.chatlist-item{
+    display: flex;
+    align-items: center;
+    height: 4.5vw;
+    border-bottom: 1px solid rgba(160,160,160);
+    padding: 0 0.5vw;
+    cursor: pointer;
+    width: 90%;
+    margin: auto;
+    transition: ease 0.1s;
+}
+.chatlist-item img{
+    height: 70%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    margin-right: 1vw;
+}
+.chatlist-item:hover{
+    background-color: rgb(9,111,88,0.8);
+    color: white;
+}

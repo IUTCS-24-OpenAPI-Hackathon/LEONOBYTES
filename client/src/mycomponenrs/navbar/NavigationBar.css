@@ -1,0 +1,217 @@
+.homepage_navigation{
+    position: relative;
+}
+@media screen and (min-width: 992px) {
+    .homepage_navigation_mainBox{
+        height: 5.5vw;
+        display: flex;
+        background-color: rgb(255,255,255);
+        width: 100%;
+        position: absolute;
+        z-index: 100000;
+    }
+    .homepage_navigation_fixed{
+        position: fixed;
+        box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+    }
+    .homepage_navigation_logoBar{
+        width: 29%;
+        height: 100%;
+        display: flex;
+    }
+    .homepage_navigation_logoBar img{
+        /* width: 55%; */
+        width: 70%;
+        height: auto;
+        /* margin: auto; */
+        margin-left:20% ;
+    }
+    .navBarIconBar{
+        visibility: hidden;
+        display: none;
+    }
+    .navBurgerIcon{
+        visibility: hidden;
+        color: transparent;
+        display: none;
+    }
+    .homepage_navigation_navMain{
+        width: 72vw;
+    }
+    .homepage_navigation_navMenu{
+        height: 100%;
+        color: black;
+        display: flex;
+        margin: auto;
+
+    }
+
+    .homepage_navigation_navSubMenu{
+        width: 45vw;
+        margin-left: 6.5vw;
+        margin-right: 0;
+        /* background-color: blue; */
+        display: flex;
+        /* justify-content: space-between; */
+        align-items: center;
+        
+    }
+    .homepage_navigation_navMenuPageLinks{
+        font-size: 1vw;
+        transition: linear 0.1s;
+        cursor: pointer;
+        margin-right: 2vw;
+        /* background-color: pink; */
+    }
+    .navMenuPageLinksWhy{
+        /* background-color: red; */
+        height: 5.5vw;
+        display: flex;
+        align-items: center;
+    }
+    .homepage_navigation_loginButton{
+        background-color: rgb(9,111,88);
+        font-size: 1.vw;
+        padding: 0.8vw 1.3vw;
+        border-radius: 0.7vw;
+        text-align: left;
+        color: white;
+    }
+}
+
+@media screen and (max-width: 991px) {
+    .homepage_navigation_mainBox{
+        background-color: white;
+        position: absolute;
+        width: 100%;
+        z-index: 100000;
+    }
+    .homepage_navigation_fixed{
+        position: fixed;
+        box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+    }
+    .homepage_navigation_logoBar{
+        width: 100%;
+        height: 16.5vw;
+        display: flex;
+        justify-content: space-between;
+        padding: 0 5vw; 
+        position: relative; 
+        z-index: 100000;
+        background-color: white;
+    }
+    .homepage_navigation_logoBar img{
+        width: 50vw;
+        height: 80%;
+    }
+
+    .navBarIconBar{
+        margin-right: 5%;
+    }
+    .navBurgerIcon{
+        position: absolute;
+        top:5vw;
+        right: 5vw;
+        font-size: 6.2vw;
+
+    }
+    .navBarIconCross{
+        visibility: hidden;
+    }
+    .homepage_navigation_navMain{
+        position: absolute;
+        width: 100%;
+        padding-top: 5vw;
+        padding-bottom: 5vw;
+        border-bottom: 1px solid black;
+        padding-top: 2vw;
+        background-color: white;
+        transform: translate(0,-97vw);
+        transition: linear 0.2s;
+        
+    }
+
+    .homepage_navigation_navMainOpen{
+        transform: translate(0,0);
+    }
+    .homepage_navigation_navSubMenu{
+        display: flex;
+        flex-direction: column;
+        text-align: center;
+        position: relative;
+        z-index: 1000;
+    }
+    .homepage_navigation_navMenuPageLinks{
+        padding: 3vw 2vw;
+        font-size: 4.5vw;
+    }
+    .homepage_navigation_loginButton{
+        background-color: rgb(9,111,88);
+        width: 70%;
+        margin: auto;
+        color: white;
+        padding: 1vw 0;
+        border-radius: 0.5vw;
+        text-align: center;
+    }
+}
+
+.navMenuPageLinks:hover{
+    color: rgb(9,111,88);
+    font-weight: 500;
+}
+
+.watchButton:hover{
+    background-color: rgb(255,0,122);;
+}
+
+.tryLink:hover{
+    background-color: rgb(37,90,84);
+    color: white;
+    
+}
+.navBurgerIcon:active{
+    transform: scale(0.8);
+}
+
+
+.homepage_navigation_submenu{
+    width: 47vw;
+    height: 24vw;
+    background-color: white;
+    position: absolute;
+    margin-left: 19vw;
+    display: flex;
+    justify-content: space-between;
+    padding: 2vw 10vw 2vw 6vw;
+    /* display: none; */
+}
+.homepage_navigation_submenuToggle{
+    display: block;
+}
+
+.homepage_navigation_submenuOverview{
+    display: flex;
+    flex-direction: column;
+}
+.homepage_navigation_submenuOverview h2{
+    font-size: 1.1vw;
+    font-weight: 600;
+    color: rgba(40,40,40);
+    margin-bottom: 1.3vw;
+}
+.homepage_navigation_submenuOverview a{
+    font-size: 0.85vw;
+    margin-bottom:0.8vw;
+    padding-left: 0.7vw;
+
+}
+.homepage_navigation_submenuOverview a:hover{
+    color: grey;
+}
+.navbar_getLink:hover{
+    background-color: rgb(112, 139, 87);
+}
+.navbar_login:hover{
+    background-color: rgb(9,111,88,0.8);
+}

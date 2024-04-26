@@ -1,0 +1,76 @@
+.touristplace{
+    width: 100%;
+}
+.touristplace_mainBox{
+    width: 90%;
+    margin: auto;
+    padding-top: 7vw;
+    padding-bottom: 2vw;
+}
+.touristplace_mainBox h1{
+    text-align: center;
+    font-size: 2vw;
+    margin-bottom: 3vw;
+}
+.touristplace_mainBox select{
+    height: 3vw;
+    width: 20vw;
+    margin: auto;
+    border: 1px solid black;  
+    color: black;
+    border-radius: 0.5vw;
+    padding: 0 1vw;
+    margin-left: 35vw;
+    margin-bottom: 2vw;
+    
+}
+.touristplace_mainBox option{
+    height: 3vw;
+}
+.touristplace_cardBox{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+.touristplace_cards{
+    width: 24%;
+    border: 1px solid black;
+    border-radius: 1vw;
+    overflow: hidden;
+    margin-bottom: 3vw;
+    
+}
+.touristplace_cards img{
+    border-radius: 1vw;
+    height: 12vw;
+    width: 100%;
+}
+.touristplace_cards_textBox{
+    padding: 2vw 1.4vw;
+}
+.touristplace_cards_textBox h2{
+    font-size: 1.3vw;
+    font-weight: 600;
+    margin-bottom: 0.5vw;
+}
+.touristplace_cards_textBox h3{
+    color: rgb(60,60,60);
+    font-size: 1.1vw;
+    font-weight: 500;
+}
+.touristplace_cards_textBox p{
+    font-size: 1vw;
+    margin-top: 0.5vw;
+    margin-bottom: 1vw;
+    max-height: 4.8vw;
+    overflow: hidden;
+}
+.touristplace_cards_textBox Button{
+    background-color: rgb(9,111,88);
+}
+.touristplace_more_button{
+    display: flex;
+    justify-content: center;
+    margin-top: 5vw;
+    
+}
