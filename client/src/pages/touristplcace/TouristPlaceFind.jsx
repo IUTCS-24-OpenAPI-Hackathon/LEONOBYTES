@@ -58,7 +58,7 @@ const TouristPlaceFind = () => {
         });
         //console.log(response.data.states);
         setButtonLoading(false);
-        if(response.status){
+        if(response.status == 200){
           setAllState(response.data.states);
           setPageNo((pageNo + 1) % 2);
         }  
@@ -79,7 +79,7 @@ const TouristPlaceFind = () => {
         const response = await axios.post(Apipath,{
             place_name: selectedState + ", " + selectedCountry,
         });
-        console.log(response.data.tourist_attractions);
+        //console.log(response.data.tourist_attractions);
         setButtonLoading(false);
         if(response.data.tourist_attractions){
           const touristAttractions = response.data.tourist_attractions;
