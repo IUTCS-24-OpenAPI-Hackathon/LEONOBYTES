@@ -477,3 +477,71 @@ async def get_all_places():
         if conn.is_connected():
             cursor.close()
             conn.close()
+            
+
+chat_template1 = ChatPromptTemplate.from_messages(
+    [
+        SystemMessage(
+            content=(
+                f"You are a tour itinerary planner."
+                ),
+            role=(
+                "helpful chatbot"
+            )
+        ),
+        HumanMessagePromptTemplate.from_template("{user_requirements}"),
+    ]
+)
+
+
+def chat1(user_requirements):
+    chat_message =  chat_template1.format_messages(user_requirements=user_requirements)
+    ans=model.invoke(chat_message)
+    return ans.content
+         
+
+@ app.post("/chatiternary")
+async def get_chat(request: ChatRequest):
+     places= get_comments_and_places(request.user_id)[1]
+     print(places)
+     user_req =  f'{request.text}. You plan tours based on the user previous travel experience. Previous traveled places : {places}. Justify why you have chosen those places. '
+     res = chat1(user_req)
+     return {"response": res}            
+ 
+ 
+ 
+ 
+ 
+
+chat_template2 = ChatPromptTemplate.from_messages(
+    [
+        SystemMessage(
+            content=(
+                f"You are a tour planner."
+                ),
+            role=(
+                "helpful chatbot"
+            )
+        ),
+        HumanMessagePromptTemplate.from_template("{user_requirements}"),
+    ]
+)
+
+def chat2(user_requirements):
+    chat_message =  chat_template2.format_messages(user_requirements=user_requirements)
+    ans=model.invoke(chat_message)
+    return ans.content
+
+@ app.post("/chatbackpacking/")
+async def get_chat(request: ChatRequest):
+     places= get_comments_and_places(request.user_id)[1]
+     print(places)
+     user_req =  f'{request.text}. My previous travelling experience {places}. Plan me a tour according my travel experience.'
+     res = chat2(user_req)
+     return {"response": res}            
+ 
+
+# user_input = "I have a tour budget of 30,000 taka. I want luxury tour of 5 days. I can travel anywhere in Bangladesh and India"
+# user_req = f'{user_input}. My previous travelling experience {places}. Plan me a tour according my travel experience.'
+
+# print(chat(user_req))
