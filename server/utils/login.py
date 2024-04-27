@@ -15,7 +15,7 @@ app = FastAPI()
 
 # Define a Pydantic model for the request body
 class LoginInput(BaseModel):
-    user_id: int
+    user_id: str
     password: str
 
 # Function to authenticate user login
