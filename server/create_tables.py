@@ -32,7 +32,8 @@ CREATE TABLE IF NOT EXISTS Places (
     place_id INT PRIMARY KEY,
     name VARCHAR(255),
     description TEXT,
-    image VARCHAR(255)
+    image VARCHAR(255),
+    status INT DEFAULT 1
 )
 """
 

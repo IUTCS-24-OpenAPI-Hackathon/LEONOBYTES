@@ -290,3 +290,51 @@ async def login_user(login_input: LoginInput):
     return result
 
 
+import osmnx as ox
+from geopy.geocoders import Nominatim
+from shapely.geometry import Point
+from fastapi import FastAPI, HTTPException
+from pydantic import BaseModel
+
+class Location(BaseModel):
+    district: str
+    country: str
+    distance_km: int = 10
+
+def find_attractions(lat, lon, distance_km):
+    # Set the location and distance in meters
+    location_point = (lat, lon)
+    distance_meters = distance_km * 1000
+    
+    # Construct a query to fetch data
+    custom_filter = f'"tourism"~"attraction"'
+    attractions = ox.geometries.geometries_from_point(location_point, tags={'tourism': True}, dist=distance_meters)
+    
+    # Filter the attractions based on the tourism tag
+    attractions = attractions[attractions['tourism'] == 'attraction']
+    
+    return attractions[['name', 'geometry']].head(10).to_dict('records')
+
+@ app.post("/attractions/")
+async def get_attractions(location: Location):
+    # Geocode the district and country to get latitude and longitude
+    geolocator = Nominatim(user_agent="get_lat_long")
+    address = f"{location.district}, {location.country}"
+    location_info = geolocator.geocode(address)
+    
+    if not location_info:
+        raise HTTPException(status_code=404, detail="Location not found")
+    
+    latitude, longitude = location_info.latitude, location_info.longitude
+    
+    # Find attractions within the specified distance
+    nearby_attractions = find_attractions(latitude, longitude, location.distance_km)
+    
+    # Extract latitude and longitude from the Point geometry
+    for attraction in nearby_attractions:
+        att = str(attraction['geometry'])
+        coordinates = att.strip('<>').split('(')[-1].strip(')>').split()
+        # Ensure coordinates are valid JSON-compliant strings
+        attraction['geometry'] = [float(coord[:len(coord)-1].strip()) for coord in coordinates[::-1]]  # Reversed for (latitude, longitude)
+    
+    return nearby_attractions
