@@ -2,11 +2,11 @@
   .chathover{
     position: fixed;
     bottom:5vw;
-    right: 5vw;
+    right: 25vw;
   }
     .chathover_message{
-      height: 30vw;
-      width: 22vw;
+      height: 37vw;
+      width: 50vw;
       background-color: rgb(138,178,167);
       overflow: hidden;
       transition: linear 0.15s;
@@ -35,11 +35,12 @@
       visibility: hidden;
     }
     .chathover_messageBox {
-      height: 23.5vw;
+      height: 30.5vw;
       overflow-y: auto;
       padding:  1vw;
       display: flex;
       flex-direction: column;
+
     }
   
     .chathover_messages {

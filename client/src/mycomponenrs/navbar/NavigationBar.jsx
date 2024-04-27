@@ -131,8 +131,9 @@ const NavigationBar = () => {
                 {!notLoggedIn &&
                   (
                     <>
-                      <Link to="/chats" className='homepage_navigation_navMenuPageLinks'>Chats</Link> 
-                      <Link to="/chatbot" className='homepage_navigation_navMenuPageLinks'>Chatbot</Link> 
+                      {/* <Link to="/chats" className='homepage_navigation_navMenuPageLinks'>Chats</Link> 
+                      <Link to="/chatbot" className='homepage_navigation_navMenuPageLinks'>Chatbot</Link>  */}
+                      <Link to="/chathover" className='homepage_navigation_navMenuPageLinks'>Chatbot</Link>
                     </>
                   )
                 }
@@ -148,7 +149,7 @@ const NavigationBar = () => {
                   :
                   (
                     <Link to="/profile" className="my-auto homepage_navigation_loginButton">
-                      <button className='mx-auto'>{userInfo.email}</button>
+                      <button className='mx-auto'>{userInfo}</button>
                     </Link>
                   )
                 }

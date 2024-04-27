@@ -9,7 +9,7 @@ const LandingPage = () => {
         <NavigationBar/>
         <Heromain/>
         <CopyRight />
-        <ChatHover />
+        {/* <ChatHover /> */}
     </>
   )
 }

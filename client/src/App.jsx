@@ -22,6 +22,9 @@ import TouristPlaceList from './pages/touristplcace/TouristPlaceList';
 import TouristPlaceDescription from './pages/touristplcace/TouristPlaceDescription';
 import MapPlace from './pages/map/MapPlace';
 import ListPlace from './pages/map/ListPlace';
+import AddPlace from './pages/addplace/AddPlace';
+import ChatHover2 from './pages/chathover/ChatHover2';
+import ChatHover3 from './pages/chathover/ChatHover3';
 
 const App = () => {
   const NotLoggedIn = checkLogin();
@@ -39,6 +42,8 @@ const App = () => {
             <Route path="/auth/forgotpassword" element={NotLoggedIn ? <Forgot /> : <Navigate to="/profile" replace />} />
             <Route path="/auth/resetpassword" element={NotLoggedIn ? <ResetPassword /> : <Navigate to="/profile" replace />} />
             <Route path="/chathover" element={<ChatHover/>} />
+            <Route path="/chathover2" element={<ChatHover2/>} />
+            <Route path="/chathover3" element={<ChatHover3/>} />
             <Route path="/chats" element={<Chats />} />
             <Route path="/place/find" element={<TouristPlaceFind />} />
             <Route path="/place/list" element={<TouristPlaceList />} />
@@ -47,6 +52,8 @@ const App = () => {
             
             <Route path="/place/map" element={<MapPlace />} />
             <Route path="/place/maplist" element={<ListPlace />} />
+
+            <Route path="/place/add" element={<AddPlace />} />
             
             <Route element={<PrivateRoute />}>
               <Route path="/profile" element={<Profile/>} />

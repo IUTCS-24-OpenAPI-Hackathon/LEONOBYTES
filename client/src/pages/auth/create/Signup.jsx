@@ -45,29 +45,19 @@ const Signup = () => {
         else{
             setButtonLoading(true);
             try{
-                const apipath = `${apiPath}/auth/create`;
+                const apipath = `${apiPath}/user`;
                 const response = await axios.post(apipath, 
                 {
-                    // name:userName,
-                    email: userEmail,
+                    user_id: userEmail,
                     password:password
                 })
                 
                 //setSignupStatus(response.data.message);
                 setButtonLoading(false);
-                //console.log(response.data);
-                if(response.status == 201){
-                    
-                    // setUserName('');
-                    
-
-                    
-                    
-                    const userObj = [{
-                        email: userEmail,
-                    }]
-                    localStorage.setItem('hackInShellAccessToken', JSON.stringify(userObj));
-                    setUserInfo(userObj);
+                console.log(response.data);
+                if(response.data.message == 'User created successfully'){
+                    localStorage.setItem('hackInShellAccessToken', userEmail);
+                    setUserInfo(userEmail);
                     
                     setUserEmail('');
                     setPassword('');
