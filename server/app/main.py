@@ -491,6 +491,11 @@ chat_template1 = ChatPromptTemplate.from_messages(
     ]
 )
 
+
+def chat1(user_requirements):
+    chat_message =  chat_template1.format_messages(user_requirements=user_requirements)
+    ans=model.invoke(chat_message)
+    return ans.content
          
 
 @ app.post("/chatiternary")
@@ -498,5 +503,34 @@ async def get_chat(request: ChatRequest):
      places= get_comments_and_places(request.user_id)[1]
      print(places)
      user_req =  f'{request.text}. You plan tours based on the user previous travel experience. Previous traveled places : {places}. Justify why you have chosen those places. '
-     res = chat(user_req)
+     res = chat1(user_req)
      return {"response": res}            
+ 
+ 
+ 
+ 
+ 
+
+# chat_template = ChatPromptTemplate.from_messages(
+#     [
+#         SystemMessage(
+#             content=(
+#                 f"You are a tour planner."
+#                 ),
+#             role=(
+#                 "helpful chatbot"
+#             )
+#         ),
+#         HumanMessagePromptTemplate.from_template("{user_requirements}"),
+#     ]
+# )
+
+# def chat(user_requirements):
+#     chat_message =  chat_template.format_messages(user_requirements=user_requirements)
+#     ans=model.invoke(chat_message)
+#     return ans.content
+
+# user_input = "I have a tour budget of 30,000 taka. I want luxury tour of 5 days. I can travel anywhere in Bangladesh and India"
+# user_req = f'{user_input}. My previous travelling experience {places}. Plan me a tour according my travel experience.'
+
+# print(chat(user_req))
