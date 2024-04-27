@@ -134,11 +134,13 @@ const NavigationBar = () => {
                       {/* <Link to="/chats" className='homepage_navigation_navMenuPageLinks'>Chats</Link> 
                       <Link to="/chatbot" className='homepage_navigation_navMenuPageLinks'>Chatbot</Link>  */}
                       <Link to="/chathover" className='homepage_navigation_navMenuPageLinks'>Chatbot</Link>
+                      <Link to="/chathover2" className='homepage_navigation_navMenuPageLinks'>Chatbot2</Link>
+                      <Link to="/chathover3" className='homepage_navigation_navMenuPageLinks'>Chatbot3</Link>
                     </>
                   )
                 }
-                <a href="/#features" className='homepage_navigation_navMenuPageLinks'>Features</a>
-                <a href="/#contacts" className='homepage_navigation_navMenuPageLinks'>Contacts</a> 
+                {/* <a href="/#features" className='homepage_navigation_navMenuPageLinks'>Features</a>
+                <a href="/#contacts" className='homepage_navigation_navMenuPageLinks'>Contacts</a>  */}
                 {
                   notLoggedIn ? 
                   (

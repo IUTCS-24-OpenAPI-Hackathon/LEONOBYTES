@@ -52,11 +52,12 @@ origins = ["*"]
 
 app.add_middleware(
     CORSMiddleware,    
-    allow_origins=origins,    
+    allow_origins=["*"],    
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
-)
+) 
+from fastapi.middleware.cors import CORSMiddleware
 
 
 @app.get("/health", status_code=status.HTTP_200_OK)
@@ -423,6 +424,7 @@ def chat(user_requirements):
 
 @ app.post("/chat")
 async def get_chat(request: ChatRequest):
+     print(request)
      places= get_comments_and_places(request.user_id)[1]
      print(places)
      user_req =  f'{request.text}. You plan tours based on the user previous travel experience. Previous traveled places : {places}. Justify why you have chosen those places. '

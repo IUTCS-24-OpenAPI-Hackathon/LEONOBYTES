@@ -14,18 +14,7 @@ const ChatHover = () => {
   const[flag, setFlag] = useState(true);
   const [chatOpen, setChatOpen] = useState(0);
   const [inputValue, setInputValue] = useState('');
-  const [chatHistory, setChatHistory] = useState([
-    {
-      role: 'user',
-      text: 'Hello, I have a question.',
-      timestamp: new Date() // You can add a timestamp if needed
-    },
-    {
-      role: 'bot',
-      text: 'Sure, go ahead and ask your question.',
-      timestamp: new Date() // You can add a timestamp if needed
-    }
-  ]);
+  const [chatHistory, setChatHistory] = useState([]);
 
   const [pageLoading, setPageLoading] = useState(true);
 
@@ -34,20 +23,24 @@ const ChatHover = () => {
 
     //send new message
     const handleSendMessage = async () => {
+      console.log(userInfo);
+      console.log(inputValue);
+        
         const myMsg = inputValue
-        setInputValue('');
+        //setInputValue('');
         setFlag(false);
 
         setChatHistory(prev => [...prev, { role: 'user', text: myMsg }]);
         
         try {
-          const apipath = `${apiPath}/chatbot/messages/send`;
+          const apipath = `${apiPath}/chat`;
           const response = await axios.post(apipath, {
-            userId: userInfo,
+            user_id: userInfo,
             text: myMsg,
           });
-          if(response.data.message == 'message sent'){
-            setChatHistory(prev => [...prev, { role: 'bot', text: response.data.message }]);
+          console.log(response.data);
+          if(response.data.response){
+            setChatHistory(prev => [...prev, { role: 'bot', text: response.data.response }]);
           }
           else{
             console.log("could not send message" + response.data.message);
@@ -64,6 +57,24 @@ const ChatHover = () => {
       setChatOpen(val);
       if(chatOpen == 0)document.querySelector('.chathover_message').classList.add('chathover_message_minimize');
       else document.querySelector('.chathover_message').classList.remove('chathover_message_minimize');
+    }
+
+    const parseMessageText = (text) => {
+      const boldRegex = /\*\*(.*?)\*\*/g; // Regex to match text enclosed within **
+      const boldText = text.replace(boldRegex, '<strong>$1</strong>'); // Wrap matched text with <strong> tag
+      
+      const newLineRegex = /(\*\*|\n)/g; // Regex to match ** or new line character
+      const formattedText = boldText.split(newLineRegex).map((part, index) => {
+        if (index % 2 === 0) {
+          // Regular text
+          return part;
+        } else {
+          // Bold text or new line
+          return part === '**' ? '<br>' : part; // Replace ** with <br> for new lines
+        }
+      });
+    
+      return formattedText.join('');
     }
     
   return (
@@ -88,7 +99,7 @@ const ChatHover = () => {
                   </p>
                 ) : (
                   <p className={`chathover_messages chathover_othersMessage`}>
-                      {message.text}
+                      {parseMessageText(message.text)}
                   </p>
                 )}
               </div>
