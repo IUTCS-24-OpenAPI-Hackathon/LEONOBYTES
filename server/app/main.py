@@ -289,12 +289,13 @@ async def login_user(login_input: LoginInput):
         raise HTTPException(status_code=401, detail=result["error"])
     return result
 
-
 import osmnx as ox
 from geopy.geocoders import Nominatim
-from shapely.geometry import Point
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
+from shapely.geometry import Point
+
+app = FastAPI()
 
 class Location(BaseModel):
     district: str
@@ -310,10 +311,23 @@ def find_attractions(lat, lon, distance_km):
     custom_filter = f'"tourism"~"attraction"'
     attractions = ox.geometries.geometries_from_point(location_point, tags={'tourism': True}, dist=distance_meters)
     
-    # Filter the attractions based on the tourism tag
-    attractions = attractions[attractions['tourism'] == 'attraction']
+    # Filter the attractions based on the tourism tag and ensure they are Points
+    attractions = attractions[attractions['geometry'].apply(lambda geom: isinstance(geom, Point))]
     
-    return attractions[['name', 'geometry']].head(10).to_dict('records')
+    # Replace NaN values with an empty string
+    attractions = attractions.fillna('')
+    
+    # Extract name and geometry coordinates
+    attractions_data = []
+    for index, row in attractions.iterrows():
+        name = row['name']
+        geometry = row['geometry']
+        lat, lon = geometry.y, geometry.x  # Extract lat and lon from Point geometry
+        coordinates = [lon, lat]  # Reverse order to lon, lat
+        attractions_data.append({'name': name, 'coordinates': coordinates})
+    
+    return attractions_data[:10]
+
 
 @ app.post("/attractions/")
 async def get_attractions(location: Location):
@@ -329,12 +343,5 @@ async def get_attractions(location: Location):
     
     # Find attractions within the specified distance
     nearby_attractions = find_attractions(latitude, longitude, location.distance_km)
-    
-    # Extract latitude and longitude from the Point geometry
-    for attraction in nearby_attractions:
-        att = str(attraction['geometry'])
-        coordinates = att.strip('<>').split('(')[-1].strip(')>').split()
-        # Ensure coordinates are valid JSON-compliant strings
-        attraction['geometry'] = [float(coord[:len(coord)-1].strip()) for coord in coordinates[::-1]]  # Reversed for (latitude, longitude)
     
     return nearby_attractions
