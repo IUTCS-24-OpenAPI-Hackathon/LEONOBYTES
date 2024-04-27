@@ -475,3 +475,28 @@ async def get_all_places():
         if conn.is_connected():
             cursor.close()
             conn.close()
+            
+
+chat_template1 = ChatPromptTemplate.from_messages(
+    [
+        SystemMessage(
+            content=(
+                f"You are a tour itinerary planner."
+                ),
+            role=(
+                "helpful chatbot"
+            )
+        ),
+        HumanMessagePromptTemplate.from_template("{user_requirements}"),
+    ]
+)
+
+         
+
+@ app.post("/chatiternary")
+async def get_chat(request: ChatRequest):
+     places= get_comments_and_places(request.user_id)[1]
+     print(places)
+     user_req =  f'{request.text}. You plan tours based on the user previous travel experience. Previous traveled places : {places}. Justify why you have chosen those places. '
+     res = chat(user_req)
+     return {"response": res}            
