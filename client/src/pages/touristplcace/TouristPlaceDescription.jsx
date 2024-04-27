@@ -21,6 +21,7 @@ const TouristPlaceDescription = () => {
     const[pageLoading, setPageLoading] = useState(false);
     const[buttonLoading, setButtonLoading] = useState(false);
 
+    const [imageData, setImageData] = useState('')
     const [weatherData, setWeatherData] = useState([]);
     const [aqiData, setAqiData] = useState([]);
     const [placeData, setPlaceData] = useState([]);
@@ -37,11 +38,32 @@ const TouristPlaceDescription = () => {
     };
 
     const handleNavigate = () => {
-        navigate('/place/map', { state: { amenity: selectedAmenity } });
+        navigate('/place/maplist', { state: { amenity: selectedAmenity } });
     };
 
     const leonobytesCountryName = localStorage.getItem('leonobytescountryname');
     const leonobytesStateName = localStorage.getItem('leonobytesstatename');
+
+    const getImageData = async () => {
+        try{
+            const Apipath = `${apiPath}/fetch_image_link`;
+            const response = await axios.post(Apipath,{
+                query: leonobytesStateName + leonobytesCountryName,
+            });
+            //console.log(response.data);
+            setPageLoading(false);
+            if(response.status == 200){
+                setImageData(response.data.image_url);
+            }  
+            else {
+              //
+            }
+        }
+        catch(error){
+          setPageLoading(false);
+          console.log(error.message);
+        }
+    }
 
     const getWeatherData = async () => {
         try{
@@ -144,6 +166,7 @@ const TouristPlaceDescription = () => {
 //   };
 
     useEffect(() => {
+        getImageData();
         getWeatherData();
         getAqiData();
         getPlaceData();
@@ -157,7 +180,12 @@ const TouristPlaceDescription = () => {
         <NavigationBar />
         <div className='touristplacedescription'>
             <div className='touristplacedescription_backimage'>
-                <img src="https://cdn.pixabay.com/photo/2018/03/20/14/00/sea-3243357_1280.jpg"/>
+                {imageData ?
+                    (<img src={imageData}/>)
+                    :
+                    (<img src="" alt={leonobytesStateName}/>)
+                }
+                
             </div>
             
             <div className='touristplacedescription_name'>
@@ -212,48 +240,7 @@ const TouristPlaceDescription = () => {
             </div>
             
 
-            <div className='touristplacedescription_album'>
-                <h2>More Photos: </h2>
-                <div className='touristplacedescription_album_photos'>
-                    <img src="https://cdn.pixabay.com/photo/2018/03/20/14/00/sea-3243357_1280.jpg" />
-                    <img src="https://cdn.pixabay.com/photo/2018/03/20/14/00/sea-3243357_1280.jpg" />
-                    <img src="https://cdn.pixabay.com/photo/2018/03/20/14/00/sea-3243357_1280.jpg" />
-                    <img src="https://cdn.pixabay.com/photo/2018/03/20/14/00/sea-3243357_1280.jpg" />
-                    <img src="https://cdn.pixabay.com/photo/2018/03/20/14/00/sea-3243357_1280.jpg" />
-                    <img src="https://cdn.pixabay.com/photo/2018/03/20/14/00/sea-3243357_1280.jpg" />
-                </div>
-            </div>
-            
-            {/* <div className='touristplacedescription_extraLinks'>
-                <Button onClick={()=>{navigate('/place/map', { state: { amenity: 'all' } })}}>View All</Button>
-                <Button onClick={()=>{navigate('/place/map', { state: { amenity: 'gym' } })}}>View Gym</Button>
-                <Button onClick={()=>{navigate('/place/map', { state: { amenity: 'hospital' } })}}>View Hospital</Button>
-                <Button onClick={()=>{navigate('/place/map', { state: { amenity: 'restaurant' } })}}>View Restaurant</Button>
-                <Button onClick={()=>{navigate('/place/map', { state: { amenity: 'pharmacy' } })}}>View Pharmacy</Button>
-                <Button onClick={()=>{navigate('/place/map', { state: { amenity: 'parking' } })}}>View Parking</Button>
-            </div> */}
-
             <div className='touristplacedescription_extraLinks'>
-                {/* <label>
-                    <input type="checkbox" value="hospital" onChange={handleCheckboxChange} />
-                    Hospital
-                </label>
-                <label>
-                    <input type="checkbox" value="restaurant" onChange={handleCheckboxChange} />
-                    Restaurant
-                </label>
-                <label>
-                    <input type="checkbox" value="pharmacy" onChange={handleCheckboxChange} />
-                    Pharmacy
-                </label>
-                <label>
-                    <input type="checkbox" value="bank" onChange={handleCheckboxChange} />
-                    Bank
-                </label>
-                <label>
-                    <input type="checkbox" value="parking" onChange={handleCheckboxChange} />
-                    Parking
-                </label> */}
                 <select value={selectedAmenity} onChange={handleCheckboxChange}>
                     <option value="hospital">Hospital</option>
                     <option value="restaurant">Restaurant</option>
@@ -261,13 +248,9 @@ const TouristPlaceDescription = () => {
                     <option value="bank">Bank</option>
                     <option value="parking">Parking</option>
                 </select>
-                <Button onClick={() =>handleNavigate()}>View Selected Categories</Button>
+                <Button onClick={() =>handleNavigate()}>View Selected Categories in List</Button>
+                <Button onClick={() =>navigate('/place/map', { state: { amenity: selectedAmenity } })}>View Selected Categories in Map</Button>
             </div>
-            {/* {
-                selectedAmenity && 
-                <MapPlace amenity={selectedAmenity}/>
-            } */}
-            
             
         </div>
     </>

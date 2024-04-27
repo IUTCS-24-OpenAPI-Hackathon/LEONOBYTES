@@ -38,18 +38,23 @@ const Login = () => {
                 })
                 //console.log(response);
                 
-                setLoginStatus(response.data.message);
+                //setLoginStatus(response.data.message);
                 setButtonLoading(false);
                 // console.log(response.data);
                 if(response.status == 200){
-                    setEmail('');
-                    setPassword('');
+                    
 
-                    localStorage.setItem('hackInShellAccessToken', response.data.token);
+                    
                     
                     //const userObj=response.data.user;
-                    const userObj = jwtDecode(response.data.token);
+                    const userObj = [{
+                        email: email,
+                    }]
+                    localStorage.setItem('hackInShellAccessToken', JSON.stringify(userObj));
                     setUserInfo(userObj);
+
+                    setEmail('');
+                    setPassword('');
                 }
                 else{
                     //

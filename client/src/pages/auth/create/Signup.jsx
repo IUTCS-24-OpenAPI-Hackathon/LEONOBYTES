@@ -10,7 +10,7 @@ import { apiPath } from '@/utils/apiPath';
 import {useUserContext} from '../../../context/UserContext';
 
 const Signup = () => {
-    const [userName, setUserName] = useState("");
+    // const [userName, setUserName] = useState("");
     const [userEmail, setUserEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
@@ -23,10 +23,7 @@ const Signup = () => {
     const loginUser = async() => {         
         setSignupStatus("");
         
-        if(userName === "" || userName == null || userName === undefined){
-            setSignupStatus("Name is empty");
-        }
-        else if(userEmail === "" || userEmail == null || userEmail === undefined){
+        if(userEmail === "" || userEmail == null || userEmail === undefined){
             setRegStatus("Email is empty");
         }
         else if(password === "" || password == null || password === undefined){
@@ -51,24 +48,30 @@ const Signup = () => {
                 const apipath = `${apiPath}/auth/create`;
                 const response = await axios.post(apipath, 
                 {
-                    name:userName,
+                    // name:userName,
                     email: userEmail,
                     password:password
                 })
                 
-                setSignupStatus(response.data.message);
+                //setSignupStatus(response.data.message);
                 setButtonLoading(false);
                 //console.log(response.data);
                 if(response.status == 201){
-                    setUserName('');
+                    
+                    // setUserName('');
+                    
+
+                    
+                    
+                    const userObj = [{
+                        email: userEmail,
+                    }]
+                    localStorage.setItem('hackInShellAccessToken', JSON.stringify(userObj));
+                    setUserInfo(userObj);
+                    
                     setUserEmail('');
                     setPassword('');
                     setConfirmPassword('');
-
-                    localStorage.setItem('hackInShellAccessToken', response.data.token);
-                    
-                    const userObj = jwtDecode(response.data.token);
-                    setUserInfo(userObj);
                 }
                 else{
                     //setSignupStatus("Wrong id or password");
@@ -97,7 +100,7 @@ const Signup = () => {
     <div className='signup'>
         <div className='signup_mainBox'>
             <h2>Sign up</h2>
-            <Input type="text" placeholder="Insert Username" value={userName} onChange={(event) => {setUserName(event.target.value);}}/>
+            {/* <Input type="text" placeholder="Insert Username" value={userName} onChange={(event) => {setUserName(event.target.value);}}/> */}
             <Input type="email" placeholder="Insert Email" value={userEmail} onChange={(event) => {setUserEmail(event.target.value);}}/>
             <Input type="password" placeholder="Insert Password" value={password} onChange={(event) => {setPassword(event.target.value);}}/>
             <Input type="password" placeholder="Confirm Password" value={confirmPassword} onChange={(event) => {setConfirmPassword(event.target.value);}}

@@ -5,6 +5,7 @@
     position: relative;
     width: 100%;
     margin-bottom: 4vw;
+    background-color: grey;
 }
 .touristplacedescription_backimage img{
     width: 100%;
@@ -45,6 +46,9 @@
     font-size: 1.4vw;
     margin-bottom: 0.5vw;
     font-weight: 500;
+}
+.touristplacedescription_middleBox_items p{
+    font-size: 1vw;
 }
 
 .touristplacedescription_description{

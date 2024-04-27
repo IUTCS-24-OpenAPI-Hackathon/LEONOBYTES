@@ -154,7 +154,6 @@ const NavigationBar = () => {
                 }
               </div>
             </div> 
-            {/* <div className='navExtra' onClick={()=> respNav()}></div> */}
           </div>
         </div>
     </div>
