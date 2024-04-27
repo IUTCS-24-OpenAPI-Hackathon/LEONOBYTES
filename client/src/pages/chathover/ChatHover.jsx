@@ -33,7 +33,7 @@ const ChatHover = () => {
         setChatHistory(prev => [...prev, { role: 'user', text: myMsg }]);
         
         try {
-          const apipath = `${apiPath}/chat`;
+          const apipath = `${apiPath}/chat_pro`;
           const response = await axios.post(apipath, {
             user_id: userInfo,
             text: myMsg,

@@ -36,6 +36,7 @@ from utils.attractions_based_on_geo import find_attractions
 from utils.attractions_based_on_geo import extract_lat_lon_from_point
 import mysql.connector
 from models.chatreq import ChatRequest
+from utils.helper import model1
 import uuid
 
 
@@ -405,9 +406,7 @@ chat_template = ChatPromptTemplate.from_messages(
             content=(
                 f"You are a tour itinerary planner."
                 ),
-            role=(
-                "helpful chatbot"
-            )
+            parts="helpful chat bot"
         ),
         HumanMessagePromptTemplate.from_template("{user_requirements}"),
     ]
@@ -538,7 +537,18 @@ async def get_chat(request: ChatRequest):
      print(places)
      user_req =  f'{request.text}. My previous travelling experience {places}. Plan me a tour according my travel experience.'
      res = chat2(user_req)
-     return {"response": res}            
+     return {"response": res}        
+
+
+@ app.post("/chat_pro")
+async def get_chat(request: ChatRequest):
+     places= get_comments_and_places(request.user_id)[1]
+     print(places)
+     user_req =  f'{request.text}. You plan tours based on the user previous travel experience. Previous traveled places : {places}. Justify why you have chosen those places. '
+     response = model1.generate_content(user_req)
+    #  user_req =  f'{request.text}. You plan tours based on the user previous travel experience. Previous traveled places : {places}. Justify why you have chosen those places. '
+    #  res = chat(user_req)
+     return {"response": response.text}
  
 
 # user_input = "I have a tour budget of 30,000 taka. I want luxury tour of 5 days. I can travel anywhere in Bangladesh and India"
