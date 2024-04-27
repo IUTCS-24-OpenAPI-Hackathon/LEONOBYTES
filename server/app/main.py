@@ -282,8 +282,13 @@ async def create_comment(comment: Comment):
         cursor.execute("INSERT INTO Comments (comment_id, place_id, comment_text, user_id) VALUES (%s, %s, %s, %s)",
                        (comment_id, comment.place_id, comment.comment_text, comment.user_id))
         conn.commit()
+        
+        status=1
+        
+        if not place:
+            status=0
 
-        return {"message": "Comment added successfully"}
+        return {"message": "Comment added successfully", "status": status}
     except mysql.connector.Error as e:
         return {"error": str(e)}
 
