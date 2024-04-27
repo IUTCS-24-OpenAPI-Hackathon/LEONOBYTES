@@ -15,3 +15,4 @@ overpy
 geopy
 sqlalchemy
 mysql-connector-python
+osmnx

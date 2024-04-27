@@ -22,12 +22,17 @@ from typing import List
 from models.socio_factor_models import SocioRequest,SocioResponse
 from utils.socio_eco_factors import chat
 from pydantic import BaseModel
+from shapely.geometry import Point
 # from database import User, Comment,
 from geopy.geocoders import Nominatim
 from database import connect_to_database
 from model import User, Place, Comment
 from create_tables import get_search_results_by_userid
 from models.search_table_save import SearchInput, save_search
+from utils.save_place_info import save_place,PlaceInput
+from utils.login import authenticate_user, LoginInput
+from utils.attractions_based_on_geo import find_attractions
+from utils.attractions_based_on_geo import extract_lat_lon_from_point
 import mysql.connector
 
 
@@ -267,6 +272,21 @@ async def save_search_data(search_input: SearchInput):
     result = save_search(search_input.user_id, search_input.search_text)
     if "error" in result:
         raise HTTPException(status_code=500, detail=result["error"])
+    return result
+
+
+@app.post("/places")
+async def save_place_data(place_input: PlaceInput):
+    result = save_place(place_input.place_id, place_input.name, place_input.description, place_input.image)
+    if "error" in result:
+        raise HTTPException(status_code=500, detail=result["error"])
+    return result
+
+@app.post("/login")
+async def login_user(login_input: LoginInput):
+    result = authenticate_user(login_input.user_id, login_input.password)
+    if "error" in result:
+        raise HTTPException(status_code=401, detail=result["error"])
     return result
 
 

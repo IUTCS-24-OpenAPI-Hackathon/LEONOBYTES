@@ -1,12 +1,13 @@
 import mysql.connector
+from database import db_config
 
 # Database connection configuration
-db_config = {
-    'host': 'localhost',
-    'user': 'root',
-    'password': 'root',
-    'database': 'sys'
-}
+# db_config = {
+#     'host': 'localhost',
+#     'user': 'root',
+#     'password': 'root',
+#     'database': 'sys'
+# }
 
 # SQL queries to create tables
 create_user_table_query = """

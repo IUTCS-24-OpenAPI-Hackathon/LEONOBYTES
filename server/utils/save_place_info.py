@@ -1,32 +1,27 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 import mysql.connector
-from utils.helper import db_config
+from  utils.helper import db_config
 
-# # Database connection configuration
-# db_config = {
-#     'host': 'localhost',
-#     'user': 'root',
-#     'password': 'root',
-#     'database': 'sys'
-# }
 
 app = FastAPI()
 
 # Define a Pydantic model for the request body
-class SearchInput(BaseModel):
-    user_id: int
-    search_text: str
+class PlaceInput(BaseModel):
+    place_id: int
+    name: str
+    description: str
+    image: str
 
-# Function to insert data into the search_table
-def save_search(user_id: int, search_text: str):
+# Function to insert data into the Places table
+def save_place(place_id: int, name: str, description: str, image: str):
     try:
         # Connect to the database
         conn = mysql.connector.connect(**db_config)
         cursor = conn.cursor()
 
         # Execute SQL query to insert data
-        cursor.execute("INSERT INTO search_table (user_id, search_text) VALUES (%s, %s)", (user_id, search_text))
+        cursor.execute("INSERT INTO Places (place_id, name, description, image) VALUES (%s, %s, %s, %s)", (place_id, name, description, image))
         
         # Commit the transaction
         conn.commit()
@@ -41,4 +36,5 @@ def save_search(user_id: int, search_text: str):
         if conn.is_connected():
             cursor.close()
             conn.close()
-
+            
+            
