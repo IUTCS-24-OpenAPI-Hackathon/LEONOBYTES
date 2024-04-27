@@ -2,6 +2,7 @@ import React, { useState, useEffect} from 'react';
 import axios from 'axios';
 import { Input } from "@/components/ui/input"
 import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { IoIosAddCircleOutline } from "react-icons/io";
 
 import ButtonLoading from '@/mycomponenrs/loading/Loading';
 import {useUserContext} from '@/context/UserContext';
@@ -32,6 +33,15 @@ const TouristPlaceList = () => {
               ))}
             </div> */}
             <div className='touristplace_cardBox'>
+              <div className='touristplace_cards cursor-pointer'
+                onClick={()=>{navigate('/place/add', { replace: true })}}
+              >
+                <img src="https://plainbackground.com/plain1024/87c560.png"/>
+                <div className='touristplace_cards_textBox flex flex-col'>
+                  <h2 className='text-center'>Add new</h2>
+                  <IoIosAddCircleOutline className='mx-auto my-auto text-6xl'/>
+                </div>
+              </div>
                 {touristAttractions && touristAttractions.map((place, index) => (
                     <div key={index} className='touristplace_cards'>
                         <img src="https://plainbackground.com/plain1024/87c560.png" alt={place} />

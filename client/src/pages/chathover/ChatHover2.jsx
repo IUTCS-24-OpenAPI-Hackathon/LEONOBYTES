@@ -8,10 +8,8 @@ import { LuMessageSquare } from "react-icons/lu";
 import { useUserContext } from '@/context/UserContext';
 import PageLoading from '@/mycomponenrs/loading/PageLoading';
 import { apiPath } from '@/utils/apiPath';
-import './ChatHover.css'
 
-const ChatHover = () => {
-  const[flag, setFlag] = useState(true);
+const ChatHover2 = () => {
   const [chatOpen, setChatOpen] = useState(0);
   const [inputValue, setInputValue] = useState('');
   const [chatHistory, setChatHistory] = useState([
@@ -31,19 +29,34 @@ const ChatHover = () => {
 
   const {userInfo} = useUserContext();
 
+    //load chat history
+    const loadChatHistory = async () => {
+        try {
+            const apipath = `${apiPath}/chatbot/messages/${userInfo.id}`;
+            const response = await axios.get(apipath);
+            if (response.data.message === "chat history found") {
+                setChatHistory(response.data.chats);
+            } else {
+                console.log(response.data.message);
+            }
+            setPageLoading(false);
+        }
+        catch (error) {
+            console.error("Error getting chat list:", error);
+        }
+    }
 
     //send new message
     const handleSendMessage = async () => {
         const myMsg = inputValue
         setInputValue('');
-        setFlag(false);
 
         setChatHistory(prev => [...prev, { role: 'user', text: myMsg }]);
         
         try {
           const apipath = `${apiPath}/chatbot/messages/send`;
           const response = await axios.post(apipath, {
-            userId: userInfo,
+            userId: userInfo.id,
             text: myMsg,
           });
           if(response.data.message == 'message sent'){
@@ -95,28 +108,26 @@ const ChatHover = () => {
             ))}
           </div>
 
-          {flag &&
-            <div className="chathover_input">
-              <input
-                type="text"
-                value={inputValue}
-                className="chathover_inputField"
-                onChange={(e) => setInputValue(e.target.value)}
-                placeholder="Type a message..."
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter') {
-                    handleSendMessage();
-                  }
-                }}
-              />
-              {inputValue.length>0 ?
-                (<div className='chathover_inputSendButtonBox'> 
-                  <IoMdSend className='chathover_inputSendButton mx-auto my-auto'
-                  onClick={()=>handleSendMessage()}/>
-                </div>): null
-              }
-            </div>
-          }
+          <div className="chathover_input">
+            <input
+              type="text"
+              value={inputValue}
+              className="chathover_inputField"
+              onChange={(e) => setInputValue(e.target.value)}
+              placeholder="Type a message..."
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  handleSendMessage();
+                }
+              }}
+            />
+            {inputValue.length>0 ?
+              (<div className='chathover_inputSendButtonBox'> 
+                <IoMdSend className='chathover_inputSendButton mx-auto my-auto'
+                onClick={()=>handleSendMessage()}/>
+              </div>): null
+            }
+          </div>
         </div>
       </div>
       <div className='chathover_bottombuttons'>
@@ -135,4 +146,4 @@ const ChatHover = () => {
   )
 }
 
-export default ChatHover
+export default ChatHover2

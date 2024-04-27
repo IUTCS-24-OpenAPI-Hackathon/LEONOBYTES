@@ -10,8 +10,9 @@ import PageLoading from '@/mycomponenrs/loading/PageLoading';
 import { apiPath } from '@/utils/apiPath';
 import './ChatHover.css'
 
-const ChatHover = () => {
+const ChatHover3 = () => {
   const[flag, setFlag] = useState(true);
+  const [reply, setReply] = useState('')
   const [chatOpen, setChatOpen] = useState(0);
   const [inputValue, setInputValue] = useState('');
   const [chatHistory, setChatHistory] = useState([
@@ -35,7 +36,7 @@ const ChatHover = () => {
     //send new message
     const handleSendMessage = async () => {
         const myMsg = inputValue
-        setInputValue('');
+        //setInputValue('');
         setFlag(false);
 
         setChatHistory(prev => [...prev, { role: 'user', text: myMsg }]);
@@ -46,7 +47,8 @@ const ChatHover = () => {
             userId: userInfo,
             text: myMsg,
           });
-          if(response.data.message == 'message sent'){
+          if(response.data.message){
+            setReply(response.data.message)
             setChatHistory(prev => [...prev, { role: 'bot', text: response.data.message }]);
           }
           else{
@@ -93,6 +95,15 @@ const ChatHover = () => {
                 )}
               </div>
             ))}
+
+            <div>
+                {inputValue && <p className={`chathover_messages chathover_myMessage`}>{inputValue}</p>}
+                {reply && <p className={`chathover_messages chathover_othersMessage`}>{
+                    reply.map((rep, index) => (
+                        <p>{rep.name}</p>
+                    ))
+                }</p>}
+            </div>
           </div>
 
           {flag &&
@@ -135,4 +146,4 @@ const ChatHover = () => {
   )
 }
 
-export default ChatHover
+export default ChatHover3

@@ -30,10 +30,10 @@ const Login = () => {
         else{
             setButtonLoading(true);
             try{
-                const apipath = `${apiPath}/auth/login`;
+                const apipath = `${apiPath}/login`;
                 const response = await axios.post(apipath, 
                 {
-                    email:email,
+                    user_id:email,
                     password:password
                 })
                 //console.log(response);
@@ -42,16 +42,8 @@ const Login = () => {
                 setButtonLoading(false);
                 // console.log(response.data);
                 if(response.status == 200){
-                    
-
-                    
-                    
-                    //const userObj=response.data.user;
-                    const userObj = [{
-                        email: email,
-                    }]
-                    localStorage.setItem('hackInShellAccessToken', JSON.stringify(userObj));
-                    setUserInfo(userObj);
+                    localStorage.setItem('hackInShellAccessToken', email);
+                    setUserInfo(email);
 
                     setEmail('');
                     setPassword('');
