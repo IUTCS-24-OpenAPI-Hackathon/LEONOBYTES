@@ -295,7 +295,6 @@ from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from shapely.geometry import Point
 
-app = FastAPI()
 
 class Location(BaseModel):
     district: str
