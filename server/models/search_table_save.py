@@ -15,7 +15,7 @@ app = FastAPI()
 
 # Define a Pydantic model for the request body
 class SearchInput(BaseModel):
-    user_id: int
+    user_id: str
     search_text: str
 
 # Function to insert data into the search_table

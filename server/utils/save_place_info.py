@@ -8,7 +8,7 @@ app = FastAPI()
 
 # Define a Pydantic model for the request body
 class PlaceInput(BaseModel):
-    place_id: int
+    place_id: str
     name: str
     description: str
     image: str

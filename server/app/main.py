@@ -34,6 +34,7 @@ from utils.login import authenticate_user, LoginInput
 from utils.attractions_based_on_geo import find_attractions
 from utils.attractions_based_on_geo import extract_lat_lon_from_point
 import mysql.connector
+import uuid
 
 
 # Connect to the database
@@ -239,30 +240,66 @@ async def create_user(user: User):
     except mysql.connector.Error as e:
         return {"error": str(e)}
 
+# @app.post("/comment/")
+# async def create_comment(comment: Comment):
+#     try:
+#          # Generate a random unique comment_id
+#         comment_id = str(uuid.uuid4())
+
+#         cursor.execute("INSERT INTO Comments (comment_id, place_id, comment_text, user_id) VALUES (%s, %s, %s, %s)",
+#                        (comment_id, comment.place_id, comment.comment_text, comment.user_id))
+#         conn.commit()
+#         return {"message": "Comment added successfully"}
+#     except mysql.connector.Error as e:
+#         return {"error": str(e)}
+
+# @app.get("/comments/{place_id}")
+# async def get_comments(place_id: int):
+#     try:
+#         cursor.execute("SELECT c.comment_text, u.user_id FROM Comments c JOIN User u ON c.user_id = u.user_id WHERE c.place_id = %s", (place_id,))
+#         comments = cursor.fetchall()
+#         return {"comments": comments}
+#     except mysql.connector.Error as e:
+#         return {"error": str(e)}
+    
 @app.post("/comment/")
 async def create_comment(comment: Comment):
     try:
-        cursor.execute("INSERT INTO Comments (place_id, comment_text, user_id) VALUES (%s, %s, %s)",
-                       (comment.place_id, comment.comment_text, comment.user_id))
+        # Check if the place exists
+        cursor.execute("SELECT * FROM Places WHERE place_id = %s", (comment.place_id,))
+        place = cursor.fetchone()
+
+        if not place:
+            # Place doesn't exist, so add the place with status=0
+            cursor.execute("INSERT INTO Places (place_id, name, description, image, status) VALUES (%s, %s, %s, %s, %s)",
+                           (comment.place_id, "", "", "", 0))
+            conn.commit()
+
+        # Generate a random unique comment_id
+        comment_id = str(uuid.uuid4())
+
+        # Add the comment
+        cursor.execute("INSERT INTO Comments (comment_id, place_id, comment_text, user_id) VALUES (%s, %s, %s, %s)",
+                       (comment_id, comment.place_id, comment.comment_text, comment.user_id))
         conn.commit()
+
         return {"message": "Comment added successfully"}
     except mysql.connector.Error as e:
         return {"error": str(e)}
 
-@app.get("/comments/{place_id}")
-async def get_comments(place_id: int):
-    try:
-        cursor.execute("SELECT c.comment_text, u.user_id FROM Comments c JOIN User u ON c.user_id = u.user_id WHERE c.place_id = %s", (place_id,))
-        comments = cursor.fetchall()
-        return {"comments": comments}
-    except mysql.connector.Error as e:
-        return {"error": str(e)}
-    
+# @app.get("/comments/{place_id}")
+# async def get_comments(place_id: int):
+#     try:
+#         cursor.execute("SELECT c.comment_text, u.user_id FROM Comments c JOIN User u ON c.user_id = u.user_id WHERE c.place_id = %s", (place_id,))
+#         comments = cursor.fetchall()
+#         return {"comments": comments}
+#     except mysql.connector.Error as e:
+#         return {"error": str(e)}
     
 
     
 @app.get("/search/{user_id}")
-async def search_results_by_user_id(user_id: int):
+async def search_results_by_user_id(user_id: str):
     return get_search_results_by_userid(user_id)    
 
 
