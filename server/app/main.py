@@ -22,6 +22,7 @@ from typing import List
 from models.socio_factor_models import SocioRequest,SocioResponse
 from utils.socio_eco_factors import chat
 from pydantic import BaseModel
+from utils.helper import db_config
 from shapely.geometry import Point
 # from database import User, Comment,
 from geopy.geocoders import Nominatim
@@ -34,6 +35,7 @@ from utils.login import authenticate_user, LoginInput
 from utils.attractions_based_on_geo import find_attractions
 from utils.attractions_based_on_geo import extract_lat_lon_from_point
 import mysql.connector
+from models.chatreq import ChatRequest
 import uuid
 
 
@@ -386,3 +388,67 @@ async def get_attractions(location: Location):
     nearby_attractions = find_attractions(latitude, longitude, location.distance_km)
     
     return nearby_attractions
+
+
+
+from utils.helper import model
+from langchain_core.messages import HumanMessage, SystemMessage
+from langchain.prompts import ChatPromptTemplate
+from langchain.prompts import HumanMessagePromptTemplate
+
+places = {'Coxs Bazar': 'I loved it', 'Moinot Ghat': 'Loved it', 'Dhaka':'Hated it', "Padma River":'Best days of my life'}
+
+chat_template = ChatPromptTemplate.from_messages(
+    [
+        SystemMessage(
+            content=(
+                f"You are a tour itinerary planner."
+                ),
+            role=(
+                "helpful chatbot"
+            )
+        ),
+        HumanMessagePromptTemplate.from_template("{user_requirements}"),
+    ]
+)
+
+def chat(user_requirements):
+    chat_message =  chat_template.format_messages(user_requirements=user_requirements)
+    ans=model.invoke(chat_message)
+    return ans.content
+
+
+
+
+
+@ app.post("/chat")
+async def get_chat(request: ChatRequest):
+     user_req =  f'{request.text}. You plan tours based on the user previous travel experience. Previous traveled places : {places}. Justify why you have chosen those places. '
+     res = chat(user_req)
+     return {"response": res}
+ 
+ 
+ 
+ 
+ # Endpoint to fetch all places info
+@app.get("/all_places/")
+async def get_all_places():
+    try:
+        # Connect to the database
+        conn = mysql.connector.connect(**db_config)
+        cursor = conn.cursor()
+
+        # Execute SQL query to fetch all places info
+        cursor.execute("SELECT * FROM sys.places")
+        places = cursor.fetchall()
+
+        return {"places": places}  # Return places info as JSON
+
+    except mysql.connector.Error as e:
+        return {"error": str(e)}
+
+    finally:
+        # Close connection
+        if conn.is_connected():
+            cursor.close()
+            conn.close()
