@@ -423,12 +423,35 @@ def chat(user_requirements):
 
 @ app.post("/chat")
 async def get_chat(request: ChatRequest):
+     places= get_comments_and_places(request.user_id)[1]
+     print(places)
      user_req =  f'{request.text}. You plan tours based on the user previous travel experience. Previous traveled places : {places}. Justify why you have chosen those places. '
      res = chat(user_req)
      return {"response": res}
  
  
  
+ 
+ 
+# Function to fetch all comments and places associated with a user
+def get_comments_and_places(user_id):
+    try:
+        # Connect to the database
+        conn = mysql.connector.connect(**db_config)
+        cursor = conn.cursor()
+
+        # Fetch all comments associated with the user
+        cursor.execute("SELECT * FROM sys.comments WHERE user_id = %s", (user_id,))
+        comments = cursor.fetchall()
+
+        # Fetch all places associated with the user
+        cursor.execute("SELECT description FROM sys.places WHERE place_id IN (SELECT place_id FROM sys.comments WHERE user_id = %s)", (user_id,))
+        places = cursor.fetchall()
+
+        return comments, places  # Return comments and places as lists
+
+    except mysql.connector.Error as e:
+        return [], []  # Return empty lists in case of error
  
  # Endpoint to fetch all places info
 @app.get("/all_places/")
