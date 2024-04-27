@@ -22,6 +22,7 @@ from typing import List
 from models.socio_factor_models import SocioRequest,SocioResponse
 from utils.socio_eco_factors import chat
 from pydantic import BaseModel
+from utils.helper import db_config
 from shapely.geometry import Point
 # from database import User, Comment,
 from geopy.geocoders import Nominatim
@@ -34,6 +35,7 @@ from utils.login import authenticate_user, LoginInput
 from utils.attractions_based_on_geo import find_attractions
 from utils.attractions_based_on_geo import extract_lat_lon_from_point
 import mysql.connector
+from models.chatreq import ChatRequest
 import uuid
 
 
@@ -282,8 +284,13 @@ async def create_comment(comment: Comment):
         cursor.execute("INSERT INTO Comments (comment_id, place_id, comment_text, user_id) VALUES (%s, %s, %s, %s)",
                        (comment_id, comment.place_id, comment.comment_text, comment.user_id))
         conn.commit()
+        
+        status=1
+        
+        if not place:
+            status=0
 
-        return {"message": "Comment added successfully"}
+        return {"message": "Comment added successfully", "status": status}
     except mysql.connector.Error as e:
         return {"error": str(e)}
 
@@ -381,3 +388,90 @@ async def get_attractions(location: Location):
     nearby_attractions = find_attractions(latitude, longitude, location.distance_km)
     
     return nearby_attractions
+
+
+
+from utils.helper import model
+from langchain_core.messages import HumanMessage, SystemMessage
+from langchain.prompts import ChatPromptTemplate
+from langchain.prompts import HumanMessagePromptTemplate
+
+places = {'Coxs Bazar': 'I loved it', 'Moinot Ghat': 'Loved it', 'Dhaka':'Hated it', "Padma River":'Best days of my life'}
+
+chat_template = ChatPromptTemplate.from_messages(
+    [
+        SystemMessage(
+            content=(
+                f"You are a tour itinerary planner."
+                ),
+            role=(
+                "helpful chatbot"
+            )
+        ),
+        HumanMessagePromptTemplate.from_template("{user_requirements}"),
+    ]
+)
+
+def chat(user_requirements):
+    chat_message =  chat_template.format_messages(user_requirements=user_requirements)
+    ans=model.invoke(chat_message)
+    return ans.content
+
+
+
+
+
+@ app.post("/chat")
+async def get_chat(request: ChatRequest):
+     places= get_comments_and_places(request.user_id)[1]
+     print(places)
+     user_req =  f'{request.text}. You plan tours based on the user previous travel experience. Previous traveled places : {places}. Justify why you have chosen those places. '
+     res = chat(user_req)
+     return {"response": res}
+ 
+ 
+ 
+ 
+ 
+# Function to fetch all comments and places associated with a user
+def get_comments_and_places(user_id):
+    try:
+        # Connect to the database
+        conn = mysql.connector.connect(**db_config)
+        cursor = conn.cursor()
+
+        # Fetch all comments associated with the user
+        cursor.execute("SELECT * FROM sys.comments WHERE user_id = %s", (user_id,))
+        comments = cursor.fetchall()
+
+        # Fetch all places associated with the user
+        cursor.execute("SELECT description FROM sys.places WHERE place_id IN (SELECT place_id FROM sys.comments WHERE user_id = %s)", (user_id,))
+        places = cursor.fetchall()
+
+        return comments, places  # Return comments and places as lists
+
+    except mysql.connector.Error as e:
+        return [], []  # Return empty lists in case of error
+ 
+ # Endpoint to fetch all places info
+@app.get("/all_places/")
+async def get_all_places():
+    try:
+        # Connect to the database
+        conn = mysql.connector.connect(**db_config)
+        cursor = conn.cursor()
+
+        # Execute SQL query to fetch all places info
+        cursor.execute("SELECT * FROM sys.places")
+        places = cursor.fetchall()
+
+        return {"places": places}  # Return places info as JSON
+
+    except mysql.connector.Error as e:
+        return {"error": str(e)}
+
+    finally:
+        # Close connection
+        if conn.is_connected():
+            cursor.close()
+            conn.close()
