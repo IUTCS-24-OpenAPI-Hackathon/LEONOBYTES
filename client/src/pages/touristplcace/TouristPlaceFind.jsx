@@ -9,6 +9,7 @@ import { apiPath } from '@/utils/apiPath';
 
 import './TouristPlaceFind.css'
 import { Button } from '@/components/ui/button';
+import { Slider } from "@/components/ui/slider"
 
 const TouristPlaceFind = () => {
   const navigate = useNavigate();
@@ -20,6 +21,8 @@ const TouristPlaceFind = () => {
 
   const[allState, setAllState] = useState([]);
   const[selectedState, setSelectedState] = useState('');
+
+  const [selectedRadius, setSelectedRadius] = useState([20]);
 
   const[allSuggestion, setAllSuggestion] = useState([]);
 
@@ -97,6 +100,35 @@ const TouristPlaceFind = () => {
     }
   }
 
+  const getAllSuggestionsStage1 = async() => {
+    setButtonLoading(true);
+    console.log(selectedRadius[0]);
+    try{
+        const Apipath = `${apiPath}/attractions`;
+        const response = await axios.post(Apipath,{
+            district: selectedState,
+            country: selectedCountry,
+            distance_km: selectedRadius[0],
+        });
+        console.log(response.data);
+        setButtonLoading(false);
+        if(response.status == 200){
+          const touristAttractionsVal = response.data;
+          const touristAttractions = touristAttractionsVal.map(attraction => attraction.name);
+          localStorage.setItem('leonobytescountryname', selectedCountry);
+          localStorage.setItem('leonobytesstatename', selectedState);
+          navigate('/place/list', { state: { touristAttractions } });
+        }  
+        else {
+          //
+        }
+    }
+    catch(error){
+      setPageLoading(false);
+      console.log(error.message);
+    }
+  }
+
   const handleCountry = () => {
     return (
         <>
@@ -125,19 +157,37 @@ const TouristPlaceFind = () => {
      )
   }
 
+  const handleRadius = () => {
+    return (
+        <>
+            <h2 >Select radius</h2>
+            
+            <input
+              type="range"
+              min={10}
+              max={30}
+              step={1}
+              value={selectedRadius}
+              onChange={(event) => {setSelectedRadius(event.target.value);}}
+              className='w-[100%]'
+            />
+        </>
+     )
+  }
+
 
   const handlePageNext = () => {
     if(pageNo == 0){
       getAllState();
     }
-    else if(pageNo == 1){
+    else if(pageNo == 2){
       getAllSuggestions()
     }
-    else setPageNo((pageNo + 1) % 2);
+    else setPageNo((pageNo + 1) % 3);
   };
 
   const handlePagePrev = () => {
-    if(pageNo > 0)setPageNo((pageNo - 1) % 2);
+    if(pageNo > 0)setPageNo((pageNo - 1) % 3);
   };
 
   const renderContent = () => {
@@ -146,6 +196,8 @@ const TouristPlaceFind = () => {
         return handleCountry();
       case 1:
         return handleState();
+      case 2:
+        return handleRadius();
       default:
         return null;
     }
@@ -157,12 +209,20 @@ const TouristPlaceFind = () => {
             {renderContent()}
             <div className='createproduct_buttons'>
               <Button variant="outline" onClick={()=>handlePagePrev()}>Prev</Button>
+              {pageNo == 2 &&
+                <>
+                  <Button variant="outline" onClick={()=>getAllSuggestionsStage1()}>Beyond</Button>
+                  <Button variant="outline" onClick={()=>getAllSuggestions()}>Borders</Button>
+                </>
+              }
+              {pageNo < 2 &&
               <Button variant="outline" onClick={()=>handlePageNext()}>
                 { buttonLoading? 
                     <ButtonLoading/>:
                     'Next'
                 }
               </Button>
+              }
             </div>
         </div>
     </div>
